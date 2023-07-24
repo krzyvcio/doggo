@@ -2,14 +2,10 @@
   "name": "doggo-server",
   "private": true,
   "version": "1.0.0",
-  "description": "NestJS Starter REST API Repository",
-  "license": "MIT",
+  "description": "Doggo server",
+  "license": "Private",
   "contributors": [
-    "Yash Murty <yashmurty@gmail.com> (https://github.com/yashmurty)",
-    "S M Asad Rahman<asad.rahman@monstar-lab.com> (https://github.com/asad-mlbd)",
-    "Tanveer Hassan <mailtanveerhassan@gmail.com> (https://github.com/war1oc)",
-    "Saad Bin Amjad <saadbinamjad@gmail.com> (https://github.com/Saad-Amjad)",
-    "Sivan Payyadakath <sivanp77@gmail.com > (https://github.com/sivanpayyadakath)"
+"Michał Rusin <rusinm@gmail.com"
   ],
   "scripts": {
     "prebuild": "rimraf dist",
@@ -33,8 +29,7 @@
     "prepare": "husky install",
     "pre-commit": "lint-staged",
     "typeorm": "env-cmd -f ./.env node -r tsconfig-paths/register -r ts-node/register ./node_modules/typeorm/cli.js -d ./ormconfig.ts",
-    "migration:create": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli migration:create ./migrations/%npm_config_name%",
-    "migration:generate": "npm run typeorm -- migration:generate ./migrations/%npm_config_name%",
+    "migration:generate": "npm run typeorm -- migration:generate ./migrations/ -n %npm_config_name%",
     "migration:run": "npm run typeorm -- migration:run",
     "migration:revert": "npm run typeorm -- migration:revert",
     "schema:sync": "npm run typeorm -- schema:sync",

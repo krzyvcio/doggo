@@ -4,3 +4,25 @@ node_modules/
 build/
 tmp/
 temp/
+
+/src/**/*.js
+/src/**/*.js.map
+/src/
+
+# Lokalne ustawienia IDE
+*.iml
+
+# Logi
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Systemy budujące
+/grunt
+/typings/core-js
+
+# Skompilowany kod ES6
+/lib/
+
+# Pliki dump
+*.dump
