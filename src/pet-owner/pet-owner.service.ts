@@ -1,27 +1,53 @@
 import { Injectable } from '@nestjs/common';
+import { plainToClass } from 'class-transformer';
 
+import { PetPatronRepository } from '../pet-patron/repositories/pet-patron.repository';
+import { AppLogger } from '../shared/logger/logger.service';
+import { RequestContext } from '../shared/request-context/request-context.dto';
 import { CreatePetOwnerDto } from './dto/create-pet-owner.dto';
+import { PetOwnerOutput } from './dto/pet-owner-output.dto';
 import { UpdatePetOwnerDto } from './dto/update-pet-owner.dto';
+import { PetOwner } from './entities/pet-owner.entity';
+import { PetOwnerRepository } from './repositories/pet-owner.repository';
 
 @Injectable()
 export class PetOwnerService {
-    create(createPetOwnerDto: CreatePetOwnerDto) {
-        return 'This action adds a new petOwner';
+    constructor(
+        private repository: PetOwnerRepository,
+        private readonly logger: AppLogger,
+    ) {
+        this.logger.setContext(PetOwnerService.name);
     }
 
-    findAll() {
-        return `This action returns all petOwner`;
+    async createPetOwnerProfile(ctx: RequestContext, input: CreatePetOwnerDto) {
+        this.logger.log(ctx, `${this.createPetOwnerProfile.name} was called`);
+
+        const petOwner = plainToClass(PetOwner, input);
+
+        this.logger.log(
+            ctx,
+            `calling ${PetOwnerRepository.name}.savePetOwnerProfile`,
+        );
+        await this.repository.save(petOwner);
+
+        return plainToClass(PetOwnerOutput, petOwner, {
+            excludeExtraneousValues: true,
+        });
     }
 
-    findOne(id: number) {
-        return `This action returns a #${id} petOwner`;
+    async findAll() {
+        return await this.repository.find({ relations: ['user', 'profile'] });
     }
 
-    update(id: number, updatePetOwnerDto: UpdatePetOwnerDto) {
-        return `This action updates a #${id} petOwner`;
+    async findOne(id: number) {
+        return await this.repository.findOneBy({ id });
     }
 
-    remove(id: number) {
-        return `This action removes a #${id} petOwner`;
+    async update(id: number, updatePetOwnerDto: UpdatePetOwnerDto) {
+        return await this.repository.update(id, updatePetOwnerDto);
+    }
+
+    async remove(id: number) {
+        return await this.repository.delete(id);
     }
 }

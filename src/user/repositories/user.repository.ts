@@ -32,4 +32,8 @@ export class UserRepository extends Repository<User> {
 
         return user;
     }
+
+    async getByIdAndUpdate(id: number, data: Partial<User>): Promise<User> {
+        return this.save({ id, ...data });
+    }
 }

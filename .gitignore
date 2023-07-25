@@ -7,7 +7,7 @@ temp/
 
 /src/**/*.js
 /src/**/*.js.map
-
+*.log
 # Lokalne ustawienia IDE
 *.iml
 *.ini

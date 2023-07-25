@@ -14,6 +14,7 @@ import {
 } from 'class-validator';
 
 import { ROLE } from '../../auth/constants/role.constant';
+import { IsAtLeastOnePropertySet } from '../../auth/decorators/validation.decorator';
 
 export class CreateUserInput {
     @ApiPropertyOptional()
@@ -62,4 +63,12 @@ export class CreateUserInput {
     @IsOptional()
     @IsBoolean()
     emailVerified: boolean;
+
+    @IsAtLeastOnePropertySet(['iAmPetOwner', 'iAmPetPatron'])
+    @IsBoolean()
+    iAmPetOwner: boolean;
+
+    @IsAtLeastOnePropertySet(['iAmPetOwner', 'iAmPetPatron'])
+    @IsBoolean()
+    iAmPetPatron: boolean;
 }

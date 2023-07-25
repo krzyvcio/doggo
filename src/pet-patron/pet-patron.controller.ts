@@ -8,6 +8,8 @@ import {
     Post,
 } from '@nestjs/common';
 
+import { ReqContext } from '../shared/request-context/req-context.decorator';
+import { RequestContext } from '../shared/request-context/request-context.dto';
 import { CreatePetPatronDto } from './dto/create-pet-patron.dto';
 import { UpdatePetPatronDto } from './dto/update-pet-patron.dto';
 import { PetPatronService } from './pet-patron.service';
@@ -17,8 +19,14 @@ export class PetPatronController {
     constructor(private readonly petPatronService: PetPatronService) {}
 
     @Post()
-    create(@Body() createPetPatronDto: CreatePetPatronDto) {
-        return this.petPatronService.create(createPetPatronDto);
+    create(
+        @ReqContext() ctx: RequestContext,
+        @Body() createPetPatronDto: CreatePetPatronDto,
+    ) {
+        return this.petPatronService.createPetPatronProfile(
+            ctx,
+            createPetPatronDto,
+        );
     }
 
     @Get()
@@ -27,20 +35,20 @@ export class PetPatronController {
     }
 
     @Get(':id')
-    findOne(@Param('id') id: string) {
-        return this.petPatronService.findOne(+id);
+    findOne(@Param('id') id: number) {
+        return this.petPatronService.findOne(id);
     }
 
     @Patch(':id')
     update(
-        @Param('id') id: string,
+        @Param('id') id: number,
         @Body() updatePetPatronDto: UpdatePetPatronDto,
     ) {
-        return this.petPatronService.update(+id, updatePetPatronDto);
+        return this.petPatronService.update(id, updatePetPatronDto);
     }
 
     @Delete(':id')
-    remove(@Param('id') id: string) {
-        return this.petPatronService.remove(+id);
+    remove(@Param('id') id: number) {
+        return this.petPatronService.remove(id);
     }
 }

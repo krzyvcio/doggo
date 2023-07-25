@@ -10,10 +10,10 @@ import {
 } from 'class-validator';
 
 import { ROLE } from '../constants/role.constant';
+import { IsAtLeastOnePropertySet } from '../decorators/validation.decorator';
 
 export class RegisterInput {
     @ApiProperty()
-    @IsNotEmpty()
     @MaxLength(100)
     @IsString()
     name: string;
@@ -21,6 +21,7 @@ export class RegisterInput {
     @ApiProperty()
     @MaxLength(200)
     @IsString()
+    @IsNotEmpty()
     username: string;
 
     @ApiProperty()
@@ -36,7 +37,9 @@ export class RegisterInput {
     email: string;
 
     // These keys can only be set by ADMIN user.
+
     roles: ROLE[] = [ROLE.USER];
+
     isAccountDisabled: boolean;
 
     @IsOptional()
@@ -49,4 +52,12 @@ export class RegisterInput {
     @IsOptional()
     @IsBoolean()
     emailVerified: boolean;
+
+    @IsAtLeastOnePropertySet(['iAmPetOwner', 'iAmPetPatron'])
+    @IsBoolean()
+    iAmPetOwner: boolean;
+
+    @IsAtLeastOnePropertySet(['iAmPetOwner', 'iAmPetPatron'])
+    @IsBoolean()
+    iAmPetPatron: boolean;
 }

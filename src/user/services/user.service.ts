@@ -2,6 +2,14 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { compare, hash } from 'bcrypt';
 import { plainToClass } from 'class-transformer';
 
+import { PetOwnerOutput } from '../../pet-owner/dto/pet-owner-output.dto';
+import { PetOwnerService } from '../../pet-owner/pet-owner.service';
+import { PetOwnerRepository } from '../../pet-owner/repositories/pet-owner.repository';
+import { PetPatronOutput } from '../../pet-patron/dto/pet-patron-output.dto';
+import { PetPatronService } from '../../pet-patron/pet-patron.service';
+import { CreateProfileDto } from '../../profile/dto/create-profile.dto';
+import { UpdateProfileDto } from '../../profile/dto/update-profile.dto';
+import { ProfileService } from '../../profile/profile.service';
 import { AppLogger } from '../../shared/logger/logger.service';
 import { RequestContext } from '../../shared/request-context/request-context.dto';
 import { CreateUserInput } from '../dtos/user-create-input.dto';
@@ -14,6 +22,9 @@ import { UserRepository } from '../repositories/user.repository';
 export class UserService {
     constructor(
         private repository: UserRepository,
+        private profileService: ProfileService,
+        private petOwnerService: PetOwnerService,
+        private petPatronService: PetPatronService,
         private readonly logger: AppLogger,
     ) {
         this.logger.setContext(UserService.name);
@@ -23,18 +34,48 @@ export class UserService {
         ctx: RequestContext,
         input: CreateUserInput,
     ): Promise<UserOutput> {
-        this.logger.log(ctx, `${this.createUser.name} was called`);
+        try {
+            this.logger.log(ctx, `${this.createUser.name} was called`);
 
-        const user = plainToClass(User, input);
+            const user = plainToClass(User, input);
 
-        user.passwordHash = await hash(input.password, 10);
+            user.passwordHash = await hash(input.password, 10);
 
-        this.logger.log(ctx, `calling ${UserRepository.name}.saveUser`);
-        await this.repository.save(user);
+            this.logger.log(ctx, `calling ${UserRepository.name}.saveUser`);
+            const newUser = await this.repository.save(user);
 
-        return plainToClass(UserOutput, user, {
-            excludeExtraneousValues: true,
-        });
+            this.logger.log(
+                ctx,
+                `calling ${ProfileService.name}.createProfile`,
+            );
+
+            // Create the profile dto.
+            const profileDto = new CreateProfileDto();
+            profileDto.userId = newUser.id;
+            profileDto.bio = null;
+            profileDto.iAmPetOwner = input.iAmPetOwner;
+            profileDto.iAmPetPatron = input.iAmPetPatron;
+
+            // Create the profile.
+            const userProfile = await this.profileService.createProfile(
+                ctx,
+                profileDto,
+            );
+
+            // Update the user with the profileId.
+            const updatedUser = await this.repository.getByIdAndUpdate(
+                newUser.id,
+                {
+                    profileId: userProfile.id,
+                },
+            );
+
+            return plainToClass(UserOutput, user, {
+                excludeExtraneousValues: true,
+            });
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     async validateUsernamePassword(

@@ -77,15 +77,13 @@ export class User {
     @Column('simple-array', { default: [ROLE.USER] })
     roles: ROLE[];
 
-    @OneToOne(() => Profile, (user) => user.id, {
-        nullable: true,
-    })
-    profileWalker: Profile;
+    @Column({ nullable: true })
+    profileId: number;
 
     @OneToOne(() => Profile, (user) => user.id, {
         nullable: true,
     })
-    profileOwner: Profile;
+    profile: Profile;
 
     @Column({ default: false })
     isAccountDisabled: boolean;

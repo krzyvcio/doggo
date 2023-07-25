@@ -1,17 +1,30 @@
-import {Body, Controller, Delete, Get, Param, Patch, Post} from "@nestjs/common";
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Param,
+    Patch,
+    Post,
+} from '@nestjs/common';
 
-import {CreateProfileDto} from "./dto/create-profile.dto";
-import {UpdateProfileDto} from "./dto/update-profile.dto";
-import {ProfileService} from "./profile.service";
+import { ReqContext } from '../shared/request-context/req-context.decorator';
+import { RequestContext } from '../shared/request-context/request-context.dto';
+import { CreateProfileDto } from './dto/create-profile.dto';
+import { ProfileOutput } from './dto/profile-output.dto';
+import { UpdateProfileDto } from './dto/update-profile.dto';
+import { ProfileService } from './profile.service';
 
-@Controller("profile")
+@Controller('profile')
 export class ProfileController {
-    constructor(private readonly profileService: ProfileService) {
-    }
+    constructor(private readonly profileService: ProfileService) {}
 
     @Post()
-    create(@Body() createProfileDto: CreateProfileDto) {
-        return this.profileService.create(createProfileDto);
+    create(
+        @ReqContext() ctx: RequestContext,
+        @Body() createProfileDto: CreateProfileDto,
+    ) {
+        return this.profileService.createProfile(ctx, createProfileDto);
     }
 
     @Get()
@@ -19,18 +32,21 @@ export class ProfileController {
         return this.profileService.findAll();
     }
 
-    @Get(":id")
-    findOne(@Param("id") id: string) {
-        return this.profileService.findOne(+id);
+    @Get(':id')
+    findOne(@Param('id') id: number) {
+        return this.profileService.findOne(id);
     }
 
-    @Patch(":id")
-    update(@Param("id") id: string, @Body() updateProfileDto: UpdateProfileDto) {
+    @Patch(':id')
+    update(
+        @Param('id') id: string,
+        @Body() updateProfileDto: UpdateProfileDto,
+    ) {
         return this.profileService.update(+id, updateProfileDto);
     }
 
-    @Delete(":id")
-    remove(@Param("id") id: string) {
+    @Delete(':id')
+    remove(@Param('id') id: string) {
         return this.profileService.remove(+id);
     }
 }
