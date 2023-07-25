@@ -1,21 +1,21 @@
-import {Injectable} from "@nestjs/common";
-import {ConfigService} from "@nestjs/config";
-import {PassportStrategy} from "@nestjs/passport";
-import {ExtractJwt, Strategy} from "passport-jwt";
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { PassportStrategy } from '@nestjs/passport';
+import { ExtractJwt, Strategy } from 'passport-jwt';
 
-import {STRATEGY_JWT_REFRESH} from "../constants/strategy.constant";
-import {UserRefreshTokenClaims} from "../dtos/auth-token-output.dto";
+import { STRATEGY_JWT_REFRESH } from '../constants/strategy.constant';
+import { UserRefreshTokenClaims } from '../dtos/auth-token-output.dto';
 
 @Injectable()
 export class JwtRefreshStrategy extends PassportStrategy(
     Strategy,
-    STRATEGY_JWT_REFRESH
+    STRATEGY_JWT_REFRESH,
 ) {
     constructor(private readonly configService: ConfigService) {
         super({
-            jwtFromRequest: ExtractJwt.fromBodyField("refreshToken"),
-            secretOrKey: configService.get<string>("jwt.publicKey"),
-            algorithms: ["RS256"]
+            jwtFromRequest: ExtractJwt.fromBodyField('refreshToken'),
+            secretOrKey: configService.get<string>('JWT_PUBLIC_KEY_BASE64'),
+            algorithms: ['RS256'],
         });
     }
 
@@ -23,6 +23,6 @@ export class JwtRefreshStrategy extends PassportStrategy(
     async validate(payload: any): Promise<UserRefreshTokenClaims> {
         // Passport automatically creates a user object, based on the value we return from the validate() method,
         // and assigns it to the Request object as req.user
-        return {id: payload.sub};
+        return { id: payload.sub };
     }
 }

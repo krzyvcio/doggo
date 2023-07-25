@@ -7,11 +7,15 @@ import { CreateUserInput } from './user/dtos/user-create-input.dto';
 
 async function bootstrap() {
     const app = await NestFactory.createApplicationContext(AppModule);
+    //get context
+
     //register superuser
     const authService = app.get(AuthService);
 
+    const ctx = new RequestContext();
+
     await authService.registerSuperAdmin(
-        new RequestContext(),
+        ctx,
         <CreateUserInput>{
             username: 'superadmin',
             password: '!23Haslo',
@@ -20,7 +24,7 @@ async function bootstrap() {
             firstName: 'Super',
             lastName: 'Admin',
         },
-        false,
+        true,
     );
     await app.close();
 }

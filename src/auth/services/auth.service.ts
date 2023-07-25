@@ -131,12 +131,13 @@ export class AuthService {
 
         //delete if admin exists
         if (deleteExistingAdmin) {
-            const admin = await this.userService.findByUsername(ctx, 'admin');
-            if (admin) {
-                await this.userService.deleteUser(ctx, admin.id);
-            }
-        }
+            const admin = await this.userService.findByUsername(
+                ctx,
+                'superadmin',
+            );
 
+            admin && (await this.userService.deleteUser(ctx, admin.id));
+        }
         const registeredUser = await this.userService.createUser(ctx, input);
         return plainToClass(UserOutput, registeredUser, {
             excludeExtraneousValues: true,
