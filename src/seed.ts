@@ -13,7 +13,7 @@ async function bootstrap() {
     await authService.registerSuperAdmin(
         new RequestContext(),
         <CreateUserInput>{
-            username: 'admin',
+            username: 'superadmin',
             password: '!23Haslo',
             email: 'rusinm@gmail.com',
             name: 'admin',
@@ -25,4 +25,4 @@ async function bootstrap() {
     await app.close();
 }
 
-bootstrap();
+void bootstrap().then((r) => console.log('SEEDS COMPLETE'));
