@@ -1,8 +1,7 @@
-import { PartialType } from "@nestjs/swagger";
+import { PartialType } from '@nestjs/swagger';
 
-import { CreatePhoneVerificationDto } from "./create-phone-verification.dto";
+import { CreatePhoneVerificationDto } from './create-phone-verification.dto';
 
 export class UpdatePhoneVerificationDto extends PartialType(
-  CreatePhoneVerificationDto
-) {
-}
+    CreatePhoneVerificationDto,
+) {}

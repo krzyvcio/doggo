@@ -1,23 +1,23 @@
-import { Test, TestingModule } from "@nestjs/testing";
+import { Test, TestingModule } from '@nestjs/testing';
 
-import { PhoneVerificationController } from "./phone-verification.controller";
-import { PhoneVerificationService } from "./phone-verification.service";
+import { PhoneVerificationController } from './phone-verification.controller';
+import { PhoneVerificationService } from './phone-verification.service';
 
-describe("PhoneVerificationController", () => {
-  let controller: PhoneVerificationController;
+describe('PhoneVerificationController', () => {
+    let controller: PhoneVerificationController;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [PhoneVerificationController],
-      providers: [PhoneVerificationService]
-    }).compile();
+    beforeEach(async () => {
+        const module: TestingModule = await Test.createTestingModule({
+            controllers: [PhoneVerificationController],
+            providers: [PhoneVerificationService],
+        }).compile();
 
-    controller = module.get<PhoneVerificationController>(
-      PhoneVerificationController
-    );
-  });
+        controller = module.get<PhoneVerificationController>(
+            PhoneVerificationController,
+        );
+    });
 
-  it("should be defined", () => {
-    expect(controller).toBeDefined();
-  });
+    it('should be defined', () => {
+        expect(controller).toBeDefined();
+    });
 });

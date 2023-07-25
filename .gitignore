@@ -7,11 +7,10 @@ temp/
 
 /src/**/*.js
 /src/**/*.js.map
-/src/
 
 # Lokalne ustawienia IDE
 *.iml
-
+*.ini
 # Logi
 npm-debug.log*
 yarn-debug.log*

@@ -1,5 +1,5 @@
-import { PartialType } from "@nestjs/swagger";
-import { CreateEmailChangeDto } from "./create-email-change.dto";
+import { PartialType } from '@nestjs/swagger';
 
-export class UpdateEmailChangeDto extends PartialType(CreateEmailChangeDto) {
-}
+import { CreateEmailChangeDto } from './create-email-change.dto';
+
+export class UpdateEmailChangeDto extends PartialType(CreateEmailChangeDto) {}

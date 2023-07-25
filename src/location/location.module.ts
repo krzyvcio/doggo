@@ -1,11 +1,10 @@
-import { Module } from "@nestjs/common";
+import { Module } from '@nestjs/common';
 
-import { LocationController } from "./location.controller";
-import { LocationService } from "./location.service";
+import { LocationController } from './location.controller';
+import { LocationService } from './location.service';
 
 @Module({
-  controllers: [LocationController],
-  providers: [LocationService]
+    controllers: [LocationController],
+    providers: [LocationService],
 })
-export class LocationModule {
-}
+export class LocationModule {}

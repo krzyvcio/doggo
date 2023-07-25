@@ -1,36 +1,46 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Param,
+    Patch,
+    Post,
+} from '@nestjs/common';
 
-import { CreateLocationDto } from "./dto/create-location.dto";
-import { UpdateLocationDto } from "./dto/update-location.dto";
-import { LocationService } from "./location.service";
+import { CreateLocationDto } from './dto/create-location.dto';
+import { UpdateLocationDto } from './dto/update-location.dto';
+import { LocationService } from './location.service';
 
-@Controller("location")
+@Controller('location')
 export class LocationController {
-  constructor(private readonly locationService: LocationService) {
-  }
+    constructor(private readonly locationService: LocationService) {}
 
-  @Post()
-  create(@Body() createLocationDto: CreateLocationDto) {
-    return this.locationService.create(createLocationDto);
-  }
+    @Post()
+    create(@Body() createLocationDto: CreateLocationDto) {
+        return this.locationService.create(createLocationDto);
+    }
 
-  @Get()
-  findAll() {
-    return this.locationService.findAll();
-  }
+    @Get()
+    findAll() {
+        return this.locationService.findAll();
+    }
 
-  @Get(":id")
-  findOne(@Param("id") id: string) {
-    return this.locationService.findOne(+id);
-  }
+    @Get(':id')
+    findOne(@Param('id') id: string) {
+        return this.locationService.findOne(+id);
+    }
 
-  @Patch(":id")
-  update(@Param("id") id: string, @Body() updateLocationDto: UpdateLocationDto) {
-    return this.locationService.update(+id, updateLocationDto);
-  }
+    @Patch(':id')
+    update(
+        @Param('id') id: string,
+        @Body() updateLocationDto: UpdateLocationDto,
+    ) {
+        return this.locationService.update(+id, updateLocationDto);
+    }
 
-  @Delete(":id")
-  remove(@Param("id") id: string) {
-    return this.locationService.remove(+id);
-  }
+    @Delete(':id')
+    remove(@Param('id') id: string) {
+        return this.locationService.remove(+id);
+    }
 }

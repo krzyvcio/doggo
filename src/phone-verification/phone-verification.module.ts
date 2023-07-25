@@ -1,11 +1,10 @@
-import { Module } from "@nestjs/common";
+import { Module } from '@nestjs/common';
 
-import { PhoneVerificationController } from "./phone-verification.controller";
-import { PhoneVerificationService } from "./phone-verification.service";
+import { PhoneVerificationController } from './phone-verification.controller';
+import { PhoneVerificationService } from './phone-verification.service';
 
 @Module({
-  controllers: [PhoneVerificationController],
-  providers: [PhoneVerificationService]
+    controllers: [PhoneVerificationController],
+    providers: [PhoneVerificationService],
 })
-export class PhoneVerificationModule {
-}
+export class PhoneVerificationModule {}

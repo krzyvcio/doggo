@@ -1,19 +1,21 @@
-import { Test, TestingModule } from "@nestjs/testing";
+import { Test, TestingModule } from '@nestjs/testing';
 
-import { TripLocationHistoryService } from "./trip-location-history.service";
+import { TripLocationHistoryService } from './trip-location-history.service';
 
-describe("TripLocationHistoryService", () => {
-  let service: TripLocationHistoryService;
+describe('TripLocationHistoryService', () => {
+    let service: TripLocationHistoryService;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [TripLocationHistoryService]
-    }).compile();
+    beforeEach(async () => {
+        const module: TestingModule = await Test.createTestingModule({
+            providers: [TripLocationHistoryService],
+        }).compile();
 
-    service = module.get<TripLocationHistoryService>(TripLocationHistoryService);
-  });
+        service = module.get<TripLocationHistoryService>(
+            TripLocationHistoryService,
+        );
+    });
 
-  it("should be defined", () => {
-    expect(service).toBeDefined();
-  });
+    it('should be defined', () => {
+        expect(service).toBeDefined();
+    });
 });

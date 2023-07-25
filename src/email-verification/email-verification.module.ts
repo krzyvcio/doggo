@@ -1,11 +1,10 @@
-import { Module } from "@nestjs/common";
+import { Module } from '@nestjs/common';
 
-import { EmailVerificationController } from "./email-verification.controller";
-import { EmailVerificationService } from "./email-verification.service";
+import { EmailVerificationController } from './email-verification.controller';
+import { EmailVerificationService } from './email-verification.service';
 
 @Module({
-  controllers: [EmailVerificationController],
-  providers: [EmailVerificationService]
+    controllers: [EmailVerificationController],
+    providers: [EmailVerificationService],
 })
-export class EmailVerificationModule {
-}
+export class EmailVerificationModule {}

@@ -1,92 +1,104 @@
-import { Column, CreateDateColumn, Entity, OneToOne, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from "typeorm";
+import {
+    Column,
+    CreateDateColumn,
+    Entity,
+    OneToMany,
+    OneToOne,
+    PrimaryGeneratedColumn,
+    Unique,
+    UpdateDateColumn,
+} from 'typeorm';
 
-import { ROLE } from "../../auth/constants/role.constant";
-import { EmailVerification } from "../../email-verification/entities/email-verification.entity";
-import { PasswordReset } from "../../password-reset/entities/password-reset.entity";
-import { PhoneVerification } from "../../phone-verification/entities/phone-verification.entity";
-import { Profile } from "../../profile/entities/profile.entity";
+import { ROLE } from '../../auth/constants/role.constant';
+import { EmailVerification } from '../../email-verification/entities/email-verification.entity';
+import { PasswordReset } from '../../password-reset/entities/password-reset.entity';
+import { PhoneVerification } from '../../phone-verification/entities/phone-verification.entity';
+import { Profile } from '../../profile/entities/profile.entity';
 
-@Entity("users")
+@Entity('users')
 export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+    @PrimaryGeneratedColumn()
+    id: number;
 
-  @Unique("username", ["username"])
-  @Column({ length: 200 })
-  username: string;
+    @Unique('username', ['username'])
+    @Column({ length: 200 })
+    username: string;
 
-  @Unique("email", ["email"])
-  @Column({ length: 100 })
-  email: string;
+    @Unique('email', ['email'])
+    @Column({ length: 100 })
+    email: string;
 
-  @Column()
-  passwordHash: string;
+    @Column()
+    passwordHash: string;
 
-  @Column({ length: 200 })
-  firstName: string;
-  @Column({ length: 200 })
-  lastName: string;
-  @Column({ length: 100, nullable: true })
-  middleName: string;
+    @Column({ length: 200 })
+    name: string;
 
-  @Column()
-  image: string;
+    @Column({ length: 200, nullable: true })
+    firstName: string;
+    @Column({ length: 200, nullable: true })
+    lastName: string;
+    @Column({ length: 100, nullable: true })
+    middleName: string;
 
-  @Column({ default: false })
-  emailVerified: boolean;
+    @Column({ nullable: true })
+    image: string;
 
-  @Column({ nullable: true })
-  birthDate: Date;
+    @Column({ default: false })
+    emailVerified: boolean;
 
-  @OneToOne(() => EmailVerification, (user) => user.id, {
-    nullable: true
-  })
-  emailVerification: EmailVerification;
+    @Column({ nullable: true })
+    birthDate: Date;
 
-  @OneToOne(() => PasswordReset, (user) => user.id, {
-    nullable: true
-  })
-  passwordReset: PasswordReset;
+    @OneToOne(() => EmailVerification, (user) => user.id, {
+        nullable: true,
+    })
+    emailVerification: EmailVerification;
 
-  @Column()
-  phone: string;
+    @OneToMany(() => PasswordReset, (user) => user.id, {
+        nullable: true,
+    })
+    passwordReset: PasswordReset;
 
-  @OneToOne(() => PhoneVerification, (user) => user.id, {
-    nullable: true
-  })
-  phoneVerification: PhoneVerification;
+    @Column({ length: 20, nullable: true })
+    phone: string;
 
-  @Column({
-    type: "timestamp",
-    default: () => "CURRENT_TIMESTAMP(6)"
-  })
-  registrationDate: Date;
+    @OneToOne(() => PhoneVerification, (user) => user.id, {
+        nullable: true,
+    })
+    phoneVerification: PhoneVerification;
 
-  @Column("simple-array")
-  roles: ROLE[];
+    @Column({
+        type: 'timestamp',
+        default: () => 'CURRENT_TIMESTAMP(6)',
+    })
+    registrationDate: Date;
 
-  @OneToOne(() => Profile, (user) => user.id, {
-    nullable: true
-  })
-  profileWalker: Profile;
+    @Column('simple-array', { default: [ROLE.USER] })
+    roles: ROLE[];
 
-  @OneToOne(() => Profile, (user) => user.id, {
-    nullable: true
-  })
-  profileOwner: Profile;
+    @OneToOne(() => Profile, (user) => user.id, {
+        nullable: true,
+    })
+    profileWalker: Profile;
 
-  @Column()
-  isAccountDisabled: boolean;
+    @OneToOne(() => Profile, (user) => user.id, {
+        nullable: true,
+    })
+    profileOwner: Profile;
 
-  @Column()
-  age: number;
+    @Column({ default: false })
+    isAccountDisabled: boolean;
 
-  @CreateDateColumn({ name: "createdAt", nullable: true })
-  createdAt: Date;
+    @Column({ nullable: true })
+    age: number;
 
-  @UpdateDateColumn({ name: "updatedAt", nullable: true })
-  updatedAt: Date;
+    @CreateDateColumn({ name: 'createdAt', nullable: true })
+    createdAt: Date;
 
-  // @OneToMany(() => Article, (article) => article.author)
-  // articles: Article[];
+    @UpdateDateColumn({ name: 'updatedAt', nullable: true })
+    updatedAt: Date;
+
+    // @OneToMany(() => Article, (article) => article.author)
+    // articles: Article[];
 }

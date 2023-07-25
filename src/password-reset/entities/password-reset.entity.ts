@@ -1,41 +1,48 @@
-import { Column, CreateDateColumn, Entity, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import {
+    Column,
+    CreateDateColumn,
+    Entity,
+    OneToOne,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn,
+} from 'typeorm';
 
-import { User } from "../../user/entities/user.entity";
+import { User } from '../../user/entities/user.entity';
 
 @Entity()
 export class PasswordReset {
-  @PrimaryGeneratedColumn()
-  id: number;
+    @PrimaryGeneratedColumn()
+    id: number;
 
-  @Column("varchar", { length: 21 })
-  token: string;
+    @Column('varchar', { length: 21 })
+    token: string;
 
-  @Column()
-  userId: string;
+    @Column()
+    userId: string;
 
-  @OneToOne(() => User, (user) => user.id, { onDelete: "CASCADE" })
+    @OneToOne(() => User, (user) => user.id, { onDelete: 'CASCADE' })
     // @JoinColumn()
-  user: User;
+    user: User;
 
-  @Column()
-  validUntil: Date;
+    @Column()
+    validUntil: Date;
 
-  @Column({ default: false })
-  isVerification: boolean;
+    @Column({ default: false })
+    isVerification: boolean;
 
-  @CreateDateColumn({
-    type: "timestamp",
-    default: () => "CURRENT_TIMESTAMP(6)",
-    onUpdate: "CURRENT_TIMESTAMP(6)",
-    nullable: true
-  })
-  createdAt: Date;
+    @CreateDateColumn({
+        type: 'timestamp',
+        default: () => 'CURRENT_TIMESTAMP(6)',
+        onUpdate: 'CURRENT_TIMESTAMP(6)',
+        nullable: true,
+    })
+    createdAt: Date;
 
-  @UpdateDateColumn({
-    type: "timestamp",
-    default: () => "CURRENT_TIMESTAMP(6)",
-    onUpdate: "CURRENT_TIMESTAMP(6)",
-    nullable: true
-  })
-  modifiedAt: Date;
+    @UpdateDateColumn({
+        type: 'timestamp',
+        default: () => 'CURRENT_TIMESTAMP(6)',
+        onUpdate: 'CURRENT_TIMESTAMP(6)',
+        nullable: true,
+    })
+    modifiedAt: Date;
 }

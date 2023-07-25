@@ -5,7 +5,7 @@
   "description": "Doggo server",
   "license": "Private",
   "contributors": [
-"Michał Rusin <rusinm@gmail.com"
+    "Michał Rusin <rusinm@gmail.com"
   ],
   "scripts": {
     "prebuild": "rimraf dist",
@@ -29,12 +29,13 @@
     "prepare": "husky install",
     "pre-commit": "lint-staged",
     "typeorm": "env-cmd -f ./.env node -r tsconfig-paths/register -r ts-node/register ./node_modules/typeorm/cli.js -d ./ormconfig.ts",
-    "migration:generate": "npm run typeorm -- migration:generate ./migrations/ -n %npm_config_name%",
+    "migration:generate": "npm run typeorm -- migration:generate ./migrations/",
     "migration:run": "npm run typeorm -- migration:run",
     "migration:revert": "npm run typeorm -- migration:revert",
     "schema:sync": "npm run typeorm -- schema:sync",
     "typeorm:drop": "npm run typeorm schema:drop",
-    "typeorm:reset": "npm run typeorm:drop && npm run typeorm:sync"
+    "typeorm:reset": "npm run typeorm:drop && npm run typeorm:sync",
+    "seed": "ts-node ./src/seed.ts"
   },
   "lint-staged": {
     "**/*.ts": [

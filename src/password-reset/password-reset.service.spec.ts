@@ -1,19 +1,19 @@
-import { Test, TestingModule } from "@nestjs/testing";
+import { Test, TestingModule } from '@nestjs/testing';
 
-import { PasswordResetService } from "./password-reset.service";
+import { PasswordResetService } from './password-reset.service';
 
-describe("PasswordResetService", () => {
-  let service: PasswordResetService;
+describe('PasswordResetService', () => {
+    let service: PasswordResetService;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [PasswordResetService]
-    }).compile();
+    beforeEach(async () => {
+        const module: TestingModule = await Test.createTestingModule({
+            providers: [PasswordResetService],
+        }).compile();
 
-    service = module.get<PasswordResetService>(PasswordResetService);
-  });
+        service = module.get<PasswordResetService>(PasswordResetService);
+    });
 
-  it("should be defined", () => {
-    expect(service).toBeDefined();
-  });
+    it('should be defined', () => {
+        expect(service).toBeDefined();
+    });
 });

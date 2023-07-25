@@ -1,7 +1,7 @@
 # Source files
 [src/**.{js,ts}]
 indent_style = space
-indent_size = 2
+indent_size = 4
 
 # Config files at the root of the project
 [*.js]

@@ -1,28 +1,28 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-import { MapPoint } from "../../map-point/entities/map-point.entity";
+import { MapPoint } from '../../map-point/entities/map-point.entity';
 
 @Entity()
 export class Location {
-  @PrimaryGeneratedColumn()
-  id: number;
+    @PrimaryGeneratedColumn()
+    id: number;
 
-  @OneToOne(() => MapPoint, (mp) => mp.id, {
-    nullable: true
-  })
-  mapPoint: MapPoint;
+    @OneToOne(() => MapPoint, (mp) => mp.id, {
+        nullable: true,
+    })
+    mapPoint: MapPoint;
 
-  @OneToOne(() => MapPoint, (mp) => mp.id, {
-    nullable: true
-  })
-  related: MapPoint;
+    @OneToOne(() => MapPoint, (mp) => mp.id, {
+        nullable: true,
+    })
+    related: MapPoint;
 
-  @Column()
-  name: string;
+    @Column()
+    name: string;
 
-  @Column()
-  city: string;
+    @Column()
+    city: string;
 
-  @Column()
-  zipCode: string;
+    @Column()
+    zipCode: string;
 }

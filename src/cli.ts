@@ -1,40 +1,44 @@
-import { ConfigService } from "@nestjs/config";
-import { NestFactory } from "@nestjs/core";
+import { ConfigService } from '@nestjs/config';
+import { NestFactory } from '@nestjs/core';
 
-import { AppModule } from "./app.module";
-import { ROLE } from "./auth/constants/role.constant";
-import { RequestContext } from "./shared/request-context/request-context.dto";
-import { CreateUserInput } from "./user/dtos/user-create-input.dto";
-import { UserService } from "./user/services/user.service";
+import { AppModule } from './app.module';
+import { ROLE } from './auth/constants/role.constant';
+import { RequestContext } from './shared/request-context/request-context.dto';
+import { CreateUserInput } from './user/dtos/user-create-input.dto';
+import { UserService } from './user/services/user.service';
 
 async function bootstrap() {
-  const app = await NestFactory.createApplicationContext(AppModule);
+    const app = await NestFactory.createApplicationContext(AppModule);
 
-  const configService = app.get(ConfigService);
-  const defaultAdminUserPassword = configService.get<string>(
-    "defaultAdminUserPassword"
-  );
+    const configService = app.get(ConfigService);
+    const defaultAdminUserPassword = configService.get<string>(
+        'defaultAdminUserPassword',
+    );
 
-  const userService = app.get(UserService);
+    const userService = app.get(UserService);
 
-  const defaultAdmin: CreateUserInput = {
-    name: "Default Admin User",
-    username: "admin",
-    password: defaultAdminUserPassword,
-    roles: [ROLE.ADMIN],
-    isAccountDisabled: false,
-    email: "hajlerster@gmail.com"
-  };
+    const defaultAdmin: CreateUserInput = {
+        name: 'Super Admin User',
+        username: 'admin',
+        password: defaultAdminUserPassword,
+        roles: [ROLE.ADMIN],
+        isAccountDisabled: false,
+        emailVerified: true,
+        email: 'rusinm@gmail.com',
+        firstName: 'Super',
+        lastName: 'Admin',
+        middleName: null,
+    };
 
-  const ctx = new RequestContext();
+    const ctx = new RequestContext();
 
-  // Create the default admin user if it doesn't already exist.
-  const user = await userService.findByUsername(ctx, defaultAdmin.username);
-  if (!user) {
-    await userService.createUser(ctx, defaultAdmin);
-  }
+    // Create the default admin user if it doesn't already exist.
+    const user = await userService.findByUsername(ctx, defaultAdmin.username);
+    if (!user) {
+        await userService.createUser(ctx, defaultAdmin);
+    }
 
-  await app.close();
+    await app.close();
 }
 
 bootstrap();
