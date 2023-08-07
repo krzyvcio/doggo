@@ -26,7 +26,54 @@ model User {
   Payments Payment[]
   // Reviews  Review[] // Relation to review system if users can rate and review service providers
 
+  dogOwnerProfile  DogOwnerProfile?
+  dogWalkerProfile DogWalkerProfile?
+  Review           Review[]
+
   @@map("users")
+}
+
+model DogOwnerProfile {
+  id        Int     @id @default(autoincrement())
+  userId    Int     @unique
+  user      User    @relation(fields: [userId], references: [id])
+  // dogsOwned Int // Number of dogs owned
+  dogsOwned Dog[]
+  Orders    Order[]
+
+  @@map("dogOwnerProfiles")
+}
+
+model DogWalkerProfile {
+  id           Int            @id @default(autoincrement())
+  userId       Int            @unique
+  user         User           @relation(fields: [userId], references: [id])
+  experience   String? // Experience level
+  availability Availability[]
+  Orders       Order[]
+
+  @@map("dogWalkerProfiles")
+}
+
+model Availability {
+  id                 Int              @id @default(autoincrement())
+  dogWalkerProfileId Int              @unique
+  dogWalkerProfile   DogWalkerProfile @relation(fields: [dogWalkerProfileId], references: [id])
+  weekday            Weekday
+  startHour          Int
+  endHour            Int
+
+  @@map("availabilities")
+}
+
+enum Weekday {
+  Monday
+  Tuesday
+  Wednesday
+  Thursday
+  Friday
+  Saturday
+  Sunday
 }
 
 model Dog {
@@ -37,26 +84,33 @@ model Dog {
   ownerId Int
   Owner   User   @relation(fields: [ownerId], references: [id])
 
-  Orders Order[]
+  Orders            Order[]
+  DogOwnerProfile   DogOwnerProfile? @relation(fields: [dogOwnerProfileId], references: [id])
+  dogOwnerProfileId Int?
 
   @@map("dogs")
 }
 
 model Order {
-  id             Int         @id @default(autoincrement())
-  dogId          Int
-  Dog            Dog         @relation(fields: [dogId], references: [id])
-  walkerId       Int
-  Walker         User        @relation(fields: [walkerId], references: [id])
-  date           DateTime
-  Distance       Float
-  Cost           Float
-  stayDuration   Int // Duration of the stay or walk
-  serviceType    ServiceType // Type of service requested (walk, feeding, play etc.)
-  GPSCoordinates GPS[]
-  Payment        Payment?
-  Tip            Float? // Optional tip from client
+  id                 Int               @id @default(autoincrement())
+  dogId              Int
+  Dog                Dog               @relation(fields: [dogId], references: [id])
+  walkerId           Int
+  Walker             User              @relation(fields: [walkerId], references: [id])
+  date               DateTime
+  Distance           Float
+  Cost               Float
+  stayDuration       Int // Duration of the stay or walk
+  serviceType        ServiceType // Type of service requested (walk, feeding, play etc.)
+  GPSCoordinates     GPS[]
+  Payment            Payment?
+  Tip                Float? // Optional tip from client
   // Review         Review[]
+  DogOwnerProfile    DogOwnerProfile?  @relation(fields: [dogOwnerProfileId], references: [id])
+  dogOwnerProfileId  Int?
+  DogWalkerProfile   DogWalkerProfile? @relation(fields: [dogWalkerProfileId], references: [id])
+  dogWalkerProfileId Int?
+  Review             Review[]
 
   @@map("orders")
 }
@@ -81,7 +135,7 @@ model Payment {
   id      Int           @id @default(autoincrement())
   Amount  Float
   Method  PaymentMethod
-  orderId Int
+  orderId Int           @unique
   Order   Order         @relation(fields: [orderId], references: [id])
   userId  Int
   User    User          @relation(fields: [userId], references: [id])
@@ -104,46 +158,14 @@ enum ServiceType {
 }
 
 // Ratings and reviews
-// model Review {
-//   id       Int     @id @default(autoincrement())
-//   rating   Int // Rating from 1-5
-//   review   String? // Review text
-//   userId   Int
-//   User     User    @relation(fields: [userId], references: [id])
-//   walkerId Int
-//   Walker   User    @relation(fields: [walkerId], references: [id])
-//   orderId  Int
-//   Order    Order   @relation(fields: [orderId], references: [id])
+model Review {
+  id       Int     @id @default(autoincrement())
+  rating   Int // Rating from 1-5
+  review   String? // Review text
+  walkerId Int
+  Walker   User    @relation(fields: [walkerId], references: [id])
+  orderId  Int
+  Order    Order   @relation(fields: [orderId], references: [id])
 
-//   @@map("reviews")
-// }
-
-// model User {
-//   id        Int      @id @default(autoincrement())
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-
-//   email String @unique
-//   hash  String
-
-//   firstName String?
-//   lastName  String?
-
-//   bookmarks Bookmark[]
-
-// }
-
-// model Bookmark {
-//   id        Int      @id @default(autoincrement())
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-
-//   title       String
-//   description String?
-//   link        String
-
-//   userId Int
-//   user   User @relation(fields: [userId], references: [id])
-
-//   @@map("bookmarks")
-// }
+  @@map("reviews")
+}
