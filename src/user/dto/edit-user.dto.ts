@@ -12,11 +12,17 @@ export class EditUserDto {
 
     @IsString()
     @IsOptional()
-    name?: string;
+    firstName?: string;
 
+    @IsString()
+    @IsOptional()
+    lastName?: string;
+    
     @IsPhoneNumber()
     @IsOptional()
     phone?: string;
+
+    
 
 
 }

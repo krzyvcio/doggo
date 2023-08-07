@@ -12,7 +12,6 @@ datasource db {
 
 model User {
   id       Int      @id @default(autoincrement())
-  name     String?
   email    String   @unique
   password String
   phone    String?
@@ -21,7 +20,8 @@ model User {
   firstName String?
   lastName  String?
 
-  Dogs     Dog[]
+  image String? // Profile image
+
   Orders   Order[]
   Payments Payment[]
   // Reviews  Review[] // Relation to review system if users can rate and review service providers
@@ -29,6 +29,7 @@ model User {
   dogOwnerProfile  DogOwnerProfile?
   dogWalkerProfile DogWalkerProfile?
   Review           Review[]
+  Dog              Dog[]
 
   @@map("users")
 }
@@ -37,6 +38,7 @@ model DogOwnerProfile {
   id        Int     @id @default(autoincrement())
   userId    Int     @unique
   user      User    @relation(fields: [userId], references: [id])
+  bio       String? // Bio
   // dogsOwned Int // Number of dogs owned
   dogsOwned Dog[]
   Orders    Order[]
@@ -48,6 +50,7 @@ model DogWalkerProfile {
   id           Int            @id @default(autoincrement())
   userId       Int            @unique
   user         User           @relation(fields: [userId], references: [id])
+  bio          String? // Bio
   experience   String? // Experience level
   availability Availability[]
   Orders       Order[]
@@ -77,12 +80,17 @@ enum Weekday {
 }
 
 model Dog {
-  id      Int    @id @default(autoincrement())
-  name    String
-  breed   String
-  age     Int
+  id   Int    @id @default(autoincrement())
+  name String
+
+  breedId Int?
+  Breed   Breed? @relation(fields: [breedId], references: [id])
+
+  age   Int?
+  image String? // Profile image
+
   ownerId Int
-  Owner   User   @relation(fields: [ownerId], references: [id])
+  Owner   User @relation(fields: [ownerId], references: [id])
 
   Orders            Order[]
   DogOwnerProfile   DogOwnerProfile? @relation(fields: [dogOwnerProfileId], references: [id])
@@ -91,6 +99,15 @@ model Dog {
   @@map("dogs")
 }
 
+model Breed {
+  id   Int    @id @default(autoincrement())
+  name String
+  Dog  Dog[]
+
+  @@map("breeds")
+}
+
+// Orders are just walks by dogwalkers for dogowners
 model Order {
   id                 Int               @id @default(autoincrement())
   dogId              Int

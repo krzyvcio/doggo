@@ -5,9 +5,10 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { AuthDto } from './dto';
 import * as argon from 'argon2';
-import { Prisma } from '@prisma/client';
+import { Prisma, User } from '@prisma/client';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { GetUser } from './decorator';
 
 @Injectable()
 export class AuthService {
@@ -38,8 +39,9 @@ export class AuthService {
         } catch (error) {
             if (
                 error instanceof
-                Prisma.PrismaClientKnownRequestError 
+                Prisma.PrismaClientKnownRequestError
             ) {
+                //if email is taken throw exception
                 if (error.code === 'P2002') {
                     throw new ForbiddenException(
                         'Credentials taken',
@@ -103,4 +105,36 @@ export class AuthService {
             access_token: token,
         };
     }
+
+
+    async refreshToken(
+      user:User
+    ): Promise<{ access_token: string }> {
+        const payload = {
+            sub: user.id,
+            email: user.email,
+        };
+        const secret =
+            this.config.get('JWT_SECRET');
+
+        const token = await this.jwt.signAsync(
+            payload,
+            {
+                expiresIn: '15m',
+                secret: secret,
+            },
+        );
+
+        return {
+            access_token: token,
+        };
+    }
+
+    async logout() {
+        return {
+            message: 'Logged out',
+        };
+    }
+    
+    
 }
