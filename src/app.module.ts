@@ -7,6 +7,8 @@ import { BookmarkModule } from './bookmark/bookmark.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { DogOwnerProfileModule } from './dog-owner-profile/dog-owner-profile.module';
 import { DogWalkerProfileModule } from './dog-walker-profile/dog-walker-profile.module';
+import { EmailService } from './email/email.service';
+import { EmailModule } from './email/email.module';
 
 @Module({
     imports: [
@@ -19,6 +21,8 @@ import { DogWalkerProfileModule } from './dog-walker-profile/dog-walker-profile.
         PrismaModule,
         DogOwnerProfileModule,
         DogWalkerProfileModule,
+        EmailModule,
     ],
+    providers: [EmailService],
 })
 export class AppModule {}

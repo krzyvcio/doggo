@@ -29,10 +29,22 @@ model User {
   dogOwnerProfile  DogOwnerProfile?
   dogWalkerProfile DogWalkerProfile?
 
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+  UserEmailConfirmation UserEmailConfirmation?
+
+  @@map("users")
+}
+
+model UserEmailConfirmation {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique
+  user      User     @relation(fields: [userId], references: [id])
+  token     String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("users")
+  @@map("userEmailConfirmations")
 }
 
 model DogOwnerProfile {
