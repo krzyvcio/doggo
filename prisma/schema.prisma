@@ -1,0 +1,149 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int      @id @default(autoincrement())
+  name     String?
+  email    String   @unique
+  password String
+  phone    String?
+  role     UserRole @default(RegisteredUser)
+
+  firstName String?
+  lastName  String?
+
+  Dogs     Dog[]
+  Orders   Order[]
+  Payments Payment[]
+  // Reviews  Review[] // Relation to review system if users can rate and review service providers
+
+  @@map("users")
+}
+
+model Dog {
+  id      Int    @id @default(autoincrement())
+  name    String
+  breed   String
+  age     Int
+  ownerId Int
+  Owner   User   @relation(fields: [ownerId], references: [id])
+
+  Orders Order[]
+
+  @@map("dogs")
+}
+
+model Order {
+  id             Int         @id @default(autoincrement())
+  dogId          Int
+  Dog            Dog         @relation(fields: [dogId], references: [id])
+  walkerId       Int
+  Walker         User        @relation(fields: [walkerId], references: [id])
+  date           DateTime
+  Distance       Float
+  Cost           Float
+  stayDuration   Int // Duration of the stay or walk
+  serviceType    ServiceType // Type of service requested (walk, feeding, play etc.)
+  GPSCoordinates GPS[]
+  Payment        Payment?
+  Tip            Float? // Optional tip from client
+  // Review         Review[]
+
+  @@map("orders")
+}
+
+enum UserRole {
+  RegisteredUser
+  DogWalker
+  DogOwner
+}
+
+model GPS {
+  id        Int   @id @default(autoincrement())
+  latitude  Float
+  longitude Float
+  orderId   Int
+  Order     Order @relation(fields: [orderId], references: [id])
+
+  @@map("gps")
+}
+
+model Payment {
+  id      Int           @id @default(autoincrement())
+  Amount  Float
+  Method  PaymentMethod
+  orderId Int
+  Order   Order         @relation(fields: [orderId], references: [id])
+  userId  Int
+  User    User          @relation(fields: [userId], references: [id])
+
+  @@map("payments")
+}
+
+enum PaymentMethod {
+  GoCardless
+  PayPal
+  Card
+  Blik
+}
+
+// The type of service requested (walk, feeding, play etc.)
+enum ServiceType {
+  Walking
+  Feeding
+  PlayEtc
+}
+
+// Ratings and reviews
+// model Review {
+//   id       Int     @id @default(autoincrement())
+//   rating   Int // Rating from 1-5
+//   review   String? // Review text
+//   userId   Int
+//   User     User    @relation(fields: [userId], references: [id])
+//   walkerId Int
+//   Walker   User    @relation(fields: [walkerId], references: [id])
+//   orderId  Int
+//   Order    Order   @relation(fields: [orderId], references: [id])
+
+//   @@map("reviews")
+// }
+
+// model User {
+//   id        Int      @id @default(autoincrement())
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   email String @unique
+//   hash  String
+
+//   firstName String?
+//   lastName  String?
+
+//   bookmarks Bookmark[]
+
+// }
+
+// model Bookmark {
+//   id        Int      @id @default(autoincrement())
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   title       String
+//   description String?
+//   link        String
+
+//   userId Int
+//   user   User @relation(fields: [userId], references: [id])
+
+//   @@map("bookmarks")
+// }

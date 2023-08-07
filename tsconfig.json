@@ -1,26 +1,21 @@
 {
   "compilerOptions": {
-    "lib": [
-      "es5",
-      "es6"
-    ],
-    "target": "es6",
     "module": "commonjs",
-    "moduleResolution": "node",
-    "outDir": "./build",
+    "declaration": true,
+    "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es2017",
     "sourceMap": true,
-    "sourceRoot": ".",
+    "outDir": "./dist",
     "baseUrl": "./",
-    "paths": {
-      "*": [
-        "packages/*/src"
-      ]
-    },
-    "importHelpers": true
-  },
-  "exclude": [
-    "./ormconfig.ts"
-  ]
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false
+  }
 }
