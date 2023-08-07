@@ -5,7 +5,7 @@ import {
 import { Test } from '@nestjs/testing';
 import * as pactum from 'pactum';
 import { AppModule } from '../src/app.module';
-import { AuthDto } from '../src/auth/dto';
+import { LoginDto } from '../src/auth/dto';
 import {
     CreateBookmarkDto,
     EditBookmarkDto,
@@ -44,7 +44,7 @@ describe('App e2e', () => {
     });
 
     describe('Auth', () => {
-        const dto: AuthDto = {
+        const dto: LoginDto = {
             email: 'vlad@gmail.com',
             password: '123',
         };

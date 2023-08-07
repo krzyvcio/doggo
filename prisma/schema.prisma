@@ -11,11 +11,11 @@ datasource db {
 }
 
 model User {
-  id       Int      @id @default(autoincrement())
-  email    String   @unique
+  id       Int        @id @default(autoincrement())
+  email    String     @unique
   password String
   phone    String?
-  role     UserRole @default(RegisteredUser)
+  roles    UserRole[] // User roles
 
   firstName String?
   lastName  String?
@@ -28,20 +28,26 @@ model User {
 
   dogOwnerProfile  DogOwnerProfile?
   dogWalkerProfile DogWalkerProfile?
-  Review           Review[]
-  Dog              Dog[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("users")
 }
 
 model DogOwnerProfile {
-  id        Int     @id @default(autoincrement())
-  userId    Int     @unique
-  user      User    @relation(fields: [userId], references: [id])
-  bio       String? // Bio
+  id     Int     @id @default(autoincrement())
+  userId Int     @unique
+  user   User    @relation(fields: [userId], references: [id])
+  bio    String? // Bio
+
   // dogsOwned Int // Number of dogs owned
-  dogsOwned Dog[]
-  Orders    Order[]
+  dogs   Dog[]
+  Orders Order[]
+  Review Review[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("dogOwnerProfiles")
 }
@@ -54,6 +60,10 @@ model DogWalkerProfile {
   experience   String? // Experience level
   availability Availability[]
   Orders       Order[]
+  Review       Review[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("dogWalkerProfiles")
 }
@@ -65,6 +75,9 @@ model Availability {
   weekday            Weekday
   startHour          Int
   endHour            Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("availabilities")
 }
@@ -89,20 +102,24 @@ model Dog {
   age   Int?
   image String? // Profile image
 
-  ownerId Int
-  Owner   User @relation(fields: [ownerId], references: [id])
-
   Orders            Order[]
   DogOwnerProfile   DogOwnerProfile? @relation(fields: [dogOwnerProfileId], references: [id])
   dogOwnerProfileId Int?
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@map("dogs")
 }
 
+//polish name: rasy psów
 model Breed {
   id   Int    @id @default(autoincrement())
   name String
   Dog  Dog[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("breeds")
 }
@@ -129,6 +146,9 @@ model Order {
   dogWalkerProfileId Int?
   Review             Review[]
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@map("orders")
 }
 
@@ -136,6 +156,7 @@ enum UserRole {
   RegisteredUser
   DogWalker
   DogOwner
+  Admin
 }
 
 model GPS {
@@ -144,6 +165,9 @@ model GPS {
   longitude Float
   orderId   Int
   Order     Order @relation(fields: [orderId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("gps")
 }
@@ -157,14 +181,17 @@ model Payment {
   userId  Int
   User    User          @relation(fields: [userId], references: [id])
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@map("payments")
 }
 
 enum PaymentMethod {
-  GoCardless
-  PayPal
-  Card
   Blik
+  GoCardless
+  Card
+  PayPal
 }
 
 // The type of service requested (walk, feeding, play etc.)
@@ -172,17 +199,28 @@ enum ServiceType {
   Walking
   Feeding
   PlayEtc
+  Carry
 }
 
 // Ratings and reviews
+// Rating shoud be from 1-5
+// Review is optional
 model Review {
-  id       Int     @id @default(autoincrement())
-  rating   Int // Rating from 1-5
-  review   String? // Review text
-  walkerId Int
-  Walker   User    @relation(fields: [walkerId], references: [id])
-  orderId  Int
-  Order    Order   @relation(fields: [orderId], references: [id])
+  id     Int     @id @default(autoincrement())
+  rating Int // Rating from 1-5
+  review String? // Review text
+
+  walkerId Int?
+  Walker   DogWalkerProfile? @relation(fields: [walkerId], references: [id])
+
+  ownerId Int?
+  Owner   DogOwnerProfile? @relation(fields: [ownerId], references: [id])
+
+  orderId Int?
+  Order   Order? @relation(fields: [orderId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("reviews")
 }

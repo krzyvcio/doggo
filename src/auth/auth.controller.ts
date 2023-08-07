@@ -8,10 +8,10 @@ import {
     UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { AuthDto } from './dto';
+import { LoginDto, RegisterDto } from './dto';
 import { GetUser } from './decorator';
 import { User } from '@prisma/client';
-import { log } from 'console';
+
 import { JwtGuard } from './guard';
 
 @Controller('auth')
@@ -21,13 +21,13 @@ export class AuthController {
     ) {}
 
     @Post('register')
-    signup(@Body() dto: AuthDto) {
+    signup(@Body() dto: RegisterDto) {
         return this.authService.register(dto);
     }
 
     @HttpCode(HttpStatus.OK)
     @Post('login')
-    signin(@Body() dto: AuthDto) {
+    signin(@Body() dto: LoginDto) {
         return this.authService.login(dto);
     }
 

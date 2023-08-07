@@ -3,12 +3,17 @@ import {
     Injectable,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { AuthDto } from './dto';
+import { LoginDto } from './dto';
 import * as argon from 'argon2';
-import { Prisma, User } from '@prisma/client';
+import {
+    Prisma,
+    User,
+    UserRole,
+} from '@prisma/client';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { GetUser } from './decorator';
+import { RegisterDto } from './dto/register.dto';
 
 @Injectable()
 export class AuthService {
@@ -18,20 +23,71 @@ export class AuthService {
         private config: ConfigService,
     ) {}
 
-    async register(dto: AuthDto) {
+    async register(dto: RegisterDto) {
         // generate the password hash
         const hash = await argon.hash(
             dto.password,
         );
         // save the new user in the db
+        //prisma transaction
+
         try {
             const user =
                 await this.prisma.user.create({
                     data: {
                         email: dto.email,
                         password: hash,
+                        firstName: dto.firstName,
+                        lastName: dto.lastName,
+                        roles: {
+                            set: [
+                                UserRole.RegisteredUser,
+                            ],
+                        },
                     },
                 });
+
+            if (dto.petOwner) {
+                await this.prisma.dogOwnerProfile.create(
+                    {
+                        data: {
+                            userId: user.id,
+                        },
+                    },
+                );
+                //add role to user push do field roles
+                await this.prisma.user.update({
+                    where: {
+                        id: user.id,
+                    },
+                    data: {
+                        roles: {
+                            push: UserRole.DogOwner,
+                        },
+                    },
+                });
+            }
+            if (dto.petWalker) {
+                await this.prisma.dogWalkerProfile.create(
+                    {
+                        data: {
+                            userId: user.id,
+                        },
+                    },
+                );
+                //add role to user push do field roles
+                await this.prisma.user.update({
+                    where: {
+                        id: user.id,
+                    },
+                    data: {
+                        roles: {
+                            push: UserRole.DogWalker,
+                        },
+                    },
+                });
+            }
+
             return this.signToken(
                 user.id,
                 user.email,
@@ -52,7 +108,7 @@ export class AuthService {
         }
     }
 
-    async login(dto: AuthDto) {
+    async login(dto: LoginDto) {
         // find the user by email
         const user =
             await this.prisma.user.findUnique({
@@ -106,9 +162,8 @@ export class AuthService {
         };
     }
 
-
     async refreshToken(
-      user:User
+        user: User,
     ): Promise<{ access_token: string }> {
         const payload = {
             sub: user.id,
@@ -135,6 +190,4 @@ export class AuthService {
             message: 'Logged out',
         };
     }
-    
-    
 }
