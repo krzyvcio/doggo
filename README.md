@@ -2,6 +2,8 @@
 
 ### Run the API in development mode
 
+docker is requiered for posgres database
+
 ```javascript
 yarn // install
 yarn db:dev:restart // start postgres in docker and push migrations

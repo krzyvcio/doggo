@@ -27,15 +27,20 @@ export class EmailService {
         text: string,
         html?: string,
     ) {
+        const emailParams = {
+            from: '"DogGo" <doggo@rusin.dev>', // sender address
+            to: recipient, // list of receivers
+            subject: subject, // Subject line
+            text: text, // plain text body
+            html: html,
+        };
+
+        if (!html) delete emailParams.html;
+
         let info =
-            await this.transporter.sendMail({
-                from: '"DogGo" <doggo@rusin.dev>', // sender address
-                to: recipient, // list of receivers
-                subject: subject, // Subject line
-                text: text, // plain text body
-                html: html,
-                // html: "<b>Hello world?</b>", // html body
-            });
+            await this.transporter.sendMail(
+                emailParams,
+            );
         //TODO: logging and storing sent emails to mongoDB
 
         console.log(
