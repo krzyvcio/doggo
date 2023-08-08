@@ -39,6 +39,7 @@ model User {
 
   isEmailConfirmed Boolean @default(false)
   isUserDeleted    Boolean @default(false)
+  Wallet           Wallet?
 
   @@map("users")
 }
@@ -178,10 +179,37 @@ model Order {
   dogWalkerProfileId Int?
   Review             Review[]
 
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  Transaction Transaction[]
+
+  @@map("orders")
+}
+
+model Wallet {
+  id      Int   @id @default(autoincrement())
+  userId  Int   @unique
+  User    User  @relation(fields: [userId], references: [id])
+  balance Float
+
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  Transaction Transaction[]
+
+  @@map("wallets")
+}
+
+model Transaction {
+  id        Int      @id @default(autoincrement())
+  amount    Float
+  walletId  Int
+  Wallet    Wallet   @relation(fields: [walletId], references: [id])
+  orderId   Int
+  Order     Order    @relation(fields: [orderId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("orders")
+  @@map("transactions")
 }
 
 enum UserRole {
