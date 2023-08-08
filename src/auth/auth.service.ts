@@ -12,8 +12,10 @@ import {
 } from '@prisma/client';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { GetUser } from './decorator';
-import { RegisterDto } from './dto/register.dto';
+
+import { RegisterDto } from './dto';
+import { UserEmailConfirmationService } from 'src/user-email-confirmation/user-email-confirmation.service';
+import { EmailService } from 'src/email/email.service';
 
 @Injectable()
 export class AuthService {
@@ -21,6 +23,8 @@ export class AuthService {
         private prisma: PrismaService,
         private jwt: JwtService,
         private config: ConfigService,
+        private userConfirmationService: UserEmailConfirmationService,
+        private emailService: EmailService,
     ) {}
 
     async register(dto: RegisterDto) {
@@ -45,6 +49,19 @@ export class AuthService {
                             ],
                         },
                     },
+                });
+
+            //create user email confirmation
+            this.userConfirmationService
+                .create(user.id)
+                .then((userConfirmation) => {
+                    console.log({
+                        userConfirmation,
+                    });
+                    this.emailService.sendConfirmationEmail(
+                        userConfirmation.token,
+                        user.email,
+                    );
                 });
 
             if (dto.petOwner) {
