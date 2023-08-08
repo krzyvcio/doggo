@@ -12,6 +12,8 @@ import { UserEmailConfirmationModule } from './user-email-confirmation/user-emai
 import { UserPasswordResetModule } from './user-password-reset/user-password-reset.module';
 
 import { DogModule } from './dog/dog.module';
+import { BreedModule } from './breed/breed.module';
+import { SeedModule } from './seed/seed.module';
 
 @Module({
     imports: [
@@ -27,6 +29,8 @@ import { DogModule } from './dog/dog.module';
         UserEmailConfirmationModule,
         UserPasswordResetModule,
         DogModule,
+        BreedModule,
+        SeedModule,
     ],
     providers: [EmailService],
 })

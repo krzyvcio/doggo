@@ -1,11 +1,11 @@
 import {
-    Controller,
-    Get,
-    Post,
     Body,
-    Patch,
-    Param,
+    Controller,
     Delete,
+    Get,
+    Param,
+    Patch,
+    Post,
 } from '@nestjs/common';
 import { DogWalkerProfileService } from './dog-walker-profile.service';
 import { CreateDogWalkerProfileDto } from './dto/create-dog-walker-profile.dto';

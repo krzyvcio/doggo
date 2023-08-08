@@ -1,10 +1,7 @@
-import {
-    Injectable,
-    Logger,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 import { PrismaService } from 'src/prisma/prisma.service';
-import { uuid } from 'uuidv4';
+import { v4 } from 'uuid';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 
 @Injectable()
@@ -28,7 +25,7 @@ export class UserEmailConfirmationService {
                 {
                     data: {
                         userId,
-                        token: uuid(),
+                        token: v4(),
                         expiresAt: date,
                     },
                 },

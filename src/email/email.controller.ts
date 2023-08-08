@@ -1,7 +1,7 @@
 import {
+    Body,
     Controller,
     Post,
-    Body,
 } from '@nestjs/common';
 import { EmailService } from './email.service';
 

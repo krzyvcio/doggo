@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { uuid } from 'uuidv4';
+import { v4 } from 'uuid';
 import * as argon from 'argon2';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { EmailService } from '../email/email.service';
+
 @Injectable()
 export class UserPasswordResetService {
     constructor(
@@ -27,7 +28,7 @@ export class UserPasswordResetService {
                 {
                     data: {
                         userId,
-                        token: uuid(),
+                        token: v4(),
                         expiresAt: date,
                     },
                 },

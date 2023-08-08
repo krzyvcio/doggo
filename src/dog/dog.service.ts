@@ -6,6 +6,7 @@ import { PrismaService } from '../prisma/prisma.service';
 @Injectable()
 export class DogService {
     constructor(private prisma: PrismaService) {}
+
     async create(createDogDto: CreateDogDto) {
         const {
             userId,

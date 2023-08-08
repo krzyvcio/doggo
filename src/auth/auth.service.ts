@@ -3,7 +3,7 @@ import {
     Injectable,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { LoginDto } from './dto';
+import { LoginDto, RegisterDto } from './dto';
 import * as argon from 'argon2';
 import {
     Prisma,
@@ -12,8 +12,6 @@ import {
 } from '@prisma/client';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-
-import { RegisterDto } from './dto';
 import { UserEmailConfirmationService } from 'src/user-email-confirmation/user-email-confirmation.service';
 import { EmailService } from 'src/email/email.service';
 

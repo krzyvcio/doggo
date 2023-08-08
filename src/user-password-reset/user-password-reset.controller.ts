@@ -1,11 +1,9 @@
 import {
+    Body,
     Controller,
     Get,
-    Post,
-    Body,
-    Patch,
     Param,
-    Delete,
+    Post,
 } from '@nestjs/common';
 import { UserPasswordResetService } from './user-password-reset.service';
 

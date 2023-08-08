@@ -1,11 +1,11 @@
 import {
-    Controller,
-    Get,
-    Post,
     Body,
-    Patch,
-    Param,
+    Controller,
     Delete,
+    Get,
+    Param,
+    Patch,
+    Post,
     UseGuards,
 } from '@nestjs/common';
 import { DogService } from './dog.service';
@@ -65,7 +65,6 @@ export class DogController {
     @Delete('/my-dogs/:id')
     async removeMyDog(
         @Param('id') id: string,
-
         @GetUser('id') userId: number,
     ) {
         return await this.dogService.removeMyDog(
