@@ -2,6 +2,7 @@ import {
     Body,
     Controller,
     Get,
+    Param,
     Patch,
     UseGuards,
 } from '@nestjs/common';
@@ -42,7 +43,8 @@ export class UserController {
         return this.userService.getAllUsers();
     }
 
-    //TODO: role guard for admin
+    @UseGuards(JwtGuard, RolesGuard)
+    @Roles(UserRole.Admin)
     @Get(':userId')
     getUserById(userId: number) {
         return this.userService.getUserById(
@@ -50,11 +52,23 @@ export class UserController {
         );
     }
 
-    //TODO: role guard for admin
+    @UseGuards(JwtGuard, RolesGuard)
+    @Roles(UserRole.Admin)
     @Get('email/:email')
     getUserByEmail(email: string) {
         return this.userService.getUserByEmail(
             email,
+        );
+    }
+
+    @UseGuards(JwtGuard, RolesGuard)
+    @Roles(UserRole.Admin)
+    @Get('delete/:id')
+    async deleteUserById(
+        @Param('id') id: string,
+    ) {
+        return await this.userService.deleteUser(
+            +id,
         );
     }
 }

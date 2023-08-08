@@ -26,8 +26,11 @@ model User {
   Payments Payment[]
   // Reviews  Review[] // Relation to review system if users can rate and review service providers
 
-  dogOwnerProfile  DogOwnerProfile?
-  dogWalkerProfile DogWalkerProfile?
+  dogOwnerProfileId Int?             @unique
+  dogOwnerProfile   DogOwnerProfile?
+
+  dogWalkerProfileId Int?              @unique
+  dogWalkerProfile   DogWalkerProfile?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -138,7 +141,7 @@ model Dog {
   @@map("dogs")
 }
 
-//polish name: rasy psów
+// polish name: rasy psów
 model Breed {
   id   Int    @id @default(autoincrement())
   name String

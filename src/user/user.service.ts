@@ -60,12 +60,66 @@ export class UserService {
     }
 
     async deleteUser(userId: number) {
+        //find user by id
         const user =
-            await this.prisma.user.delete({
+            await this.prisma.user.findUnique({
                 where: {
                     id: userId,
                 },
             });
+
+        if (user) {
+            //find DogWalkerProfile by userId
+            const dogWalkerProfile =
+                await this.prisma.dogWalkerProfile.findUnique(
+                    {
+                        where: {
+                            userId: userId,
+                        },
+                    },
+                );
+
+            if (dogWalkerProfile) {
+                //delete DogWalkerProfile
+                await this.prisma.dogWalkerProfile.delete(
+                    {
+                        where: {
+                            id: dogWalkerProfile.id,
+                        },
+                    },
+                );
+            }
+
+            //find DogOwnerProfile by userId
+            const dogOwnerProfile =
+                await this.prisma.dogOwnerProfile.findUnique(
+                    {
+                        where: {
+                            userId: userId,
+                        },
+                    },
+                );
+
+            //TODO: if have dogs remove dogds
+
+            if (dogOwnerProfile) {
+                //delete DogOwnerProfile
+                await this.prisma.dogOwnerProfile.delete(
+                    {
+                        where: {
+                            id: dogOwnerProfile.id,
+                        },
+                    },
+                );
+            }
+        }
+
+        // const user =
+        //     await this.prisma.user.delete({
+        //         where: {
+        //             id: userId,
+        //         },
+        //     });
 
         return user;
     }
