@@ -25,13 +25,14 @@ export class UserService {
         return user;
     }
 
-    async getAllUsers() {
+    async getAllUsers(limit?: number) {
         const users =
             await this.prisma.user.findMany({
                 select: {
                     id: true,
                     email: true,
                 },
+                take: limit,
             });
 
         return users;

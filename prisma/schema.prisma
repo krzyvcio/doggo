@@ -38,6 +38,7 @@ model User {
   UserEmailConfirmation UserEmailConfirmation?
 
   isEmailConfirmed Boolean @default(false)
+  isUserDeleted    Boolean @default(false)
 
   @@map("users")
 }
@@ -70,10 +71,10 @@ model DogOwnerProfile {
   user   User    @relation(fields: [userId], references: [id])
   bio    String? // Bio
 
-  // dogsOwned Int // Number of dogs owned
-  dogs   Dog[]
-  Orders Order[]
-  Review Review[]
+  dogsOwned Int? // Number of dogs owned
+  dogs      Dog[]
+  Orders    Order[]
+  Review    Review[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -132,8 +133,8 @@ model Dog {
   image String? // Profile image
 
   Orders            Order[]
-  DogOwnerProfile   DogOwnerProfile? @relation(fields: [dogOwnerProfileId], references: [id])
-  dogOwnerProfileId Int?
+  DogOwnerProfile   DogOwnerProfile @relation(fields: [dogOwnerProfileId], references: [id])
+  dogOwnerProfileId Int
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -143,9 +144,11 @@ model Dog {
 
 // polish name: rasy psów
 model Breed {
-  id   Int    @id @default(autoincrement())
-  name String
-  Dog  Dog[]
+  id          Int     @id @default(autoincrement())
+  name        String
+  englishName String?
+
+  Dog Dog[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

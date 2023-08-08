@@ -6,9 +6,10 @@ import {
 } from 'class-validator';
 
 export class EditUserDto {
-    @IsEmail()
-    @IsOptional()
-    email?: string;
+    // TODO: uncomment this when you have email verification for new email
+    // @IsEmail()
+    // @IsOptional()
+    // email?: string;
 
     @IsString()
     @IsOptional()
