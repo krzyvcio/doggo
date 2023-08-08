@@ -1,0 +1,100 @@
+[
+  {
+    "email": "julia.kowalczyk@rusin.dev",
+    "password": "!23Haslo",
+    "firstName": "Julia",
+    "lastName": "Kowalczyk",
+    "image": "https://randomuser.me/api/portraits/women/22.jpg"
+  },
+  {
+    "email": "arkadiusz.nowak@rusin.dev",
+    "password": "!23Haslo",
+    "firstName": "Arkadiusz",
+    "lastName": "Nowak",
+    "image": "https://randomuser.me/api/portraits/men/12.jpg"
+  },
+  {
+    "email": "monika.wójcik@rusin.dev",
+    "password": "!23Haslo",
+    "firstName": "Monika",
+    "lastName": "Wójcik",
+    "image": "https://randomuser.me/api/portraits/women/33.jpg"
+  },
+  {
+    "email": "jakub.szczepanski@rusin.dev",
+    "password": "!23Haslo",
+    "firstName": "Jakub",
+    "lastName": "Szczepański",
+    "image": "https://randomuser.me/api/portraits/men/40.jpg"
+  },
+  {
+    "email": "julia.kowalczyk@rusin.dev",
+    "password": "!23Haslo",
+    "firstName": "Julia",
+    "lastName": "Kowalczyk",
+    "image": "https://randomuser.me/api/portraits/women/22.jpg"
+  },
+  {
+    "email": "arkadiusz.nowak@rusin.dev",
+    "password": "!23Haslo",
+    "firstName": "Arkadiusz",
+    "lastName": "Nowak",
+    "image": "https://randomuser.me/api/portraits/men/12.jpg"
+  },
+  {
+    "email": "monika.wójcik@rusin.dev",
+    "password": "!23Haslo",
+    "firstName": "Monika",
+    "lastName": "Wójcik",
+    "image": "https://randomuser.me/api/portraits/women/33.jpg"
+  },
+  {
+    "email": "jakub.szczepanski@rusin.dev",
+    "password": "!23Haslo",
+    "firstName": "Jakub",
+    "lastName": "Szczepański",
+    "image": "https://randomuser.me/api/portraits/men/40.jpg"
+  },
+  {
+    "email": "anna.lewandowska@rusin.dev",
+    "password": "!23Haslo",
+    "firstName": "Anna",
+    "lastName": "Lewandowska",
+    "image": "https://randomuser.me/api/portraits/women/5.jpg"
+  },
+  {
+    "email": "filip.wojciechowski@rusin.dev",
+    "password": "!23Haslo",
+    "firstName": "Filip",
+    "lastName": "Wojciechowski",
+    "image": "https://randomuser.me/api/portraits/men/23.jpg"
+  },
+  {
+    "email": "katarzyna.duda@rusin.dev",
+    "password": "!23Haslo",
+    "firstName": "Katarzyna",
+    "lastName": "Duda",
+    "image": "https://randomuser.me/api/portraits/women/17.jpg"
+  },
+  {
+    "email": "krzysztof.zielinski@rusin.dev",
+    "password": "!23Haslo",
+    "firstName": "Krzysztof",
+    "lastName": "Zieliński",
+    "image": "https://randomuser.me/api/portraits/men/39.jpg"
+  },
+  {
+    "email": "magdalena.jaworska@rusin.dev",
+    "password": "!23Haslo",
+    "firstName": "Magdalena",
+    "lastName": "Jaworska",
+    "image": "https://randomuser.me/api/portraits/women/28.jpg"
+  },
+  {
+    "email": "sebastian.wilk@rusin.dev",
+    "password": "!23Haslo",
+    "firstName": "Sebastian",
+    "lastName": "Wilk",
+    "image": "https://randomuser.me/api/portraits/men/6.jpg"
+  }
+]
