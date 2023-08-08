@@ -209,7 +209,15 @@ model Transaction {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  transactionStatus TransactionStatus
+
   @@map("transactions")
+}
+
+enum TransactionStatus {
+  Pending
+  Completed
+  Failed
 }
 
 enum UserRole {
