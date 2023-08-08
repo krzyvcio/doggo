@@ -5,11 +5,13 @@ import {
     Patch,
     UseGuards,
 } from '@nestjs/common';
-import { User } from '@prisma/client';
+import { User, UserRole } from '@prisma/client';
 import { GetUser } from '../auth/decorator';
 import { JwtGuard } from '../auth/guard';
 import { EditUserDto } from './dto';
 import { UserService } from './user.service';
+import { RolesGuard } from '../auth/guard/roles.guard';
+import { Roles } from '../auth/decorator/roles.decorator';
 
 @UseGuards(JwtGuard)
 @Controller('users')
@@ -33,7 +35,12 @@ export class UserController {
         );
     }
 
-    @Get()
+    @UseGuards(JwtGuard, RolesGuard)
+    @Roles(
+        UserRole.Admin,
+        UserRole.RegisteredUser,
+    )
+    @Get('all')
     getAllUsers() {
         return this.userService.getAllUsers();
     }
