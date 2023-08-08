@@ -1,7 +1,15 @@
-import {Column, CreateDateColumn, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
+import {
+    Column,
+    CreateDateColumn,
+    Entity,
+    OneToMany,
+    OneToOne,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn,
+} from 'typeorm';
 
-import {PetOwner} from "../../pet-owner/entities/pet-owner.entity";
-import {User} from "../../user/entities/user.entity";
+import { PetOwner } from '../../pet-owner/entities/pet-owner.entity';
+import { User } from '../../user/entities/user.entity';
 
 export enum PetType {
     None = 0,
@@ -15,7 +23,7 @@ export class Pet {
     id: number;
 
     @OneToOne(() => User, (user) => user.id, {
-        nullable: false
+        nullable: false,
     })
     user: User;
 
@@ -25,27 +33,27 @@ export class Pet {
     @Column()
     name: string;
 
-    @Column({default: PetType.DOG})
+    @Column({ default: PetType.DOG })
     type: PetType;
 
-    @Column({nullable: true})
+    @Column({ nullable: true })
     birthDate: Date;
 
-    @Column({nullable: true})
+    @Column({ nullable: true })
     photo: string;
 
     @CreateDateColumn({
-        type: "timestamp",
-        default: () => "CURRENT_TIMESTAMP(6)",
-        nullable: true
+        type: 'timestamp',
+        default: () => 'CURRENT_TIMESTAMP(6)',
+        nullable: true,
     })
     createdAt: Date;
 
     @UpdateDateColumn({
-        type: "timestamp",
-        default: () => "CURRENT_TIMESTAMP(6)",
-        onUpdate: "CURRENT_TIMESTAMP(6)",
-        nullable: true
+        type: 'timestamp',
+        default: () => 'CURRENT_TIMESTAMP(6)',
+        onUpdate: 'CURRENT_TIMESTAMP(6)',
+        nullable: true,
     })
     modifiedAt: Date;
 }

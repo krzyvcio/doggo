@@ -1,12 +1,12 @@
-import {Injectable} from "@nestjs/common";
+import { Injectable } from '@nestjs/common';
 
-import {CreatePetDto} from "./dto/create-pet.dto";
-import {UpdatePetDto} from "./dto/update-pet.dto";
+import { CreatePetDto } from './dto/create-pet.dto';
+import { UpdatePetDto } from './dto/update-pet.dto';
 
 @Injectable()
 export class PetService {
     create(createPetDto: CreatePetDto) {
-        return "This action adds a new pet";
+        return 'This action adds a new pet';
     }
 
     findAll() {

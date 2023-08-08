@@ -1,18 +1,25 @@
-import {Max, Min} from "class-validator";
-import {Column, CreateDateColumn, Entity, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
+import { Max, Min } from 'class-validator';
+import {
+    Column,
+    CreateDateColumn,
+    Entity,
+    OneToOne,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn,
+} from 'typeorm';
 
-import {Location} from "../../location/entities/location.entity";
-import {Payment} from "../../payment/entities/payment.entity";
-import {User} from "../../user/entities/user.entity";
+import { Location } from '../../location/entities/location.entity';
+import { Payment } from '../../payment/entities/payment.entity';
+import { User } from '../../user/entities/user.entity';
 
 export enum TripStatus {
-    PENDING = "PENDING",
-    CONFIRMED = "CONFIRMED",
-    CANCELLED = "CANCELLED",
-    FINISHED = "FINISHED",
-    FINISHED_WITH_ERRORS = "FINISHED_WITH_ERRORS",
-    EMERGENCY_STOP = "EMERGENCY_STOP",
-    ACCIDENT_STOP = "ACCIDENT_STOP",
+    PENDING = 'PENDING',
+    CONFIRMED = 'CONFIRMED',
+    CANCELLED = 'CANCELLED',
+    FINISHED = 'FINISHED',
+    FINISHED_WITH_ERRORS = 'FINISHED_WITH_ERRORS',
+    EMERGENCY_STOP = 'EMERGENCY_STOP',
+    ACCIDENT_STOP = 'ACCIDENT_STOP',
 }
 
 @Entity()
@@ -21,11 +28,11 @@ export class Trip {
     id: number;
 
     @OneToOne(() => User, (user) => user.id, {
-        nullable: false
+        nullable: false,
     })
     petPatron: User;
     @OneToOne(() => User, (user) => user.id, {
-        nullable: false
+        nullable: false,
     })
     petOwner: User;
 
@@ -33,7 +40,7 @@ export class Trip {
     pickupInfo: string;
 
     @OneToOne(() => Location, (loc) => loc.id, {
-        nullable: false
+        nullable: false,
     })
     pickupLocation: Location;
 
@@ -45,11 +52,11 @@ export class Trip {
     pickupTime: Date;
 
     @OneToOne(() => Location, (loc) => loc.id, {
-        nullable: false
+        nullable: false,
     })
     startLocation: Location;
     @OneToOne(() => Location, (loc) => loc.id, {
-        nullable: false
+        nullable: false,
     })
     endLocation: Location;
 
@@ -57,7 +64,7 @@ export class Trip {
     feedingInfo: string;
 
     //czas dania checi wyprowadzenia psa do akceptacji przez wlasiciela
-    @Column("interval")
+    @Column('interval')
     requestTime: string;
 
     @Column()
@@ -65,7 +72,7 @@ export class Trip {
     @Column()
     endTime: Date;
 
-    @Column("float", {})
+    @Column('float', {})
     walkDistance: number;
 
     @Column()
@@ -75,11 +82,11 @@ export class Trip {
 
     @Column()
     status: TripStatus;
-    @Column({nullable: true, default: null})
+    @Column({ nullable: true, default: null })
     cancelReason: string;
 
     @OneToOne(() => Payment, (payment) => payment.id, {
-        nullable: false
+        nullable: false,
     })
     payment: Payment;
 
@@ -90,9 +97,9 @@ export class Trip {
     @Column()
     expectedDuration: number;
 
-    @Column("float", {})
+    @Column('float', {})
     totalFare: number;
-    @Column("float", {})
+    @Column('float', {})
     netFare: number;
 
     @Column()
@@ -114,17 +121,17 @@ export class Trip {
     ratingForPetPatron: number;
 
     @CreateDateColumn({
-        type: "timestamp",
-        default: () => "CURRENT_TIMESTAMP(6)",
-        nullable: true
+        type: 'timestamp',
+        default: () => 'CURRENT_TIMESTAMP(6)',
+        nullable: true,
     })
     createdAt: Date;
 
     @UpdateDateColumn({
-        type: "timestamp",
-        default: () => "CURRENT_TIMESTAMP(6)",
-        onUpdate: "CURRENT_TIMESTAMP(6)",
-        nullable: true
+        type: 'timestamp',
+        default: () => 'CURRENT_TIMESTAMP(6)',
+        onUpdate: 'CURRENT_TIMESTAMP(6)',
+        nullable: true,
     })
     modifiedAt: Date;
 }

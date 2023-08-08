@@ -1,50 +1,58 @@
-import {ExecutionContext} from "@nestjs/common";
+import { ExecutionContext } from '@nestjs/common';
 
-import {AppLogger} from "../logger/logger.service";
-import * as utils from "../request-context/util";
-import {LoggingInterceptor} from "./logging.interceptor";
+import { AppLogger } from '../logger/logger.service';
+import * as utils from '../request-context/util';
+import { LoggingInterceptor } from './logging.interceptor';
 
-describe("LoggingInterceptor", () => {
+describe('LoggingInterceptor', () => {
     let loggingInterceptor: LoggingInterceptor;
 
     const mockRequest = {
         headers: {},
-        url: "mock-url",
-        header: jest.fn()
+        url: 'mock-url',
+        header: jest.fn(),
     };
 
     const mockExecutionContext = {
         switchToHttp: jest.fn().mockReturnThis(),
-        getRequest: jest.fn().mockReturnThis()
+        getRequest: jest.fn().mockReturnThis(),
     } as unknown as ExecutionContext;
 
     const mockCallHandler = {
         handle: jest.fn(),
-        pipe: jest.fn().mockReturnThis()
+        pipe: jest.fn().mockReturnThis(),
     };
 
     beforeEach(async () => {
         loggingInterceptor = new LoggingInterceptor(new AppLogger());
     });
 
-    it("should be defined", () => {
+    it('should be defined', () => {
         expect(loggingInterceptor).toBeDefined();
     });
 
-    describe("intercept", () => {
-        it("intercept", async () => {
+    describe('intercept', () => {
+        it('intercept', async () => {
             (
-                mockExecutionContext.switchToHttp().getRequest as jest.Mock<any, any>
+                mockExecutionContext.switchToHttp().getRequest as jest.Mock<
+                    any,
+                    any
+                >
             ).mockReturnValueOnce(mockRequest);
             mockCallHandler.handle.mockReturnValueOnce({
-                pipe: jest.fn()
+                pipe: jest.fn(),
             });
 
-            const createRequestContext = jest.spyOn(utils, "createRequestContext");
+            const createRequestContext = jest.spyOn(
+                utils,
+                'createRequestContext',
+            );
 
             loggingInterceptor.intercept(mockExecutionContext, mockCallHandler);
 
-            expect(mockExecutionContext.switchToHttp().getRequest).toHaveBeenCalled();
+            expect(
+                mockExecutionContext.switchToHttp().getRequest,
+            ).toHaveBeenCalled();
             expect(createRequestContext).toHaveBeenCalledWith(mockRequest);
         });
     });

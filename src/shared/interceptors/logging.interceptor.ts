@@ -1,9 +1,14 @@
-import {CallHandler, ExecutionContext, Injectable, NestInterceptor} from "@nestjs/common";
-import {Observable} from "rxjs";
-import {tap} from "rxjs/operators";
+import {
+    CallHandler,
+    ExecutionContext,
+    Injectable,
+    NestInterceptor,
+} from '@nestjs/common';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
-import {AppLogger} from "../logger/logger.service";
-import {createRequestContext} from "../request-context/util";
+import { AppLogger } from '../logger/logger.service';
+import { createRequestContext } from '../request-context/util';
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
@@ -24,10 +29,10 @@ export class LoggingInterceptor implements NestInterceptor {
 
                 const responseTime = Date.now() - now;
 
-                const resData = {method, statusCode, responseTime};
+                const resData = { method, statusCode, responseTime };
 
-                this.appLogger.log(ctx, "Request completed", {resData});
-            })
+                this.appLogger.log(ctx, 'Request completed', { resData });
+            }),
         );
     }
 }

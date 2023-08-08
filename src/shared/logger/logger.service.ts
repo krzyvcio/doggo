@@ -1,16 +1,16 @@
-import {Injectable, Scope} from "@nestjs/common";
-import {createLogger, Logger, transports} from "winston";
+import { Injectable, Scope } from '@nestjs/common';
+import { createLogger, Logger, transports } from 'winston';
 
-import {RequestContext} from "../request-context/request-context.dto";
+import { RequestContext } from '../request-context/request-context.dto';
 
-@Injectable({scope: Scope.TRANSIENT})
+@Injectable({ scope: Scope.TRANSIENT })
 export class AppLogger {
     private context?: string;
     private logger: Logger;
 
     constructor() {
         this.logger = createLogger({
-            transports: [new transports.Console()]
+            transports: [new transports.Console()],
         });
     }
 
@@ -21,7 +21,7 @@ export class AppLogger {
     error(
         ctx: RequestContext,
         message: string,
-        meta?: Record<string, any>
+        meta?: Record<string, any>,
     ): Logger {
         const timestamp = new Date().toISOString();
 
@@ -30,14 +30,14 @@ export class AppLogger {
             contextName: this.context,
             ctx,
             timestamp,
-            ...meta
+            ...meta,
         });
     }
 
     warn(
         ctx: RequestContext,
         message: string,
-        meta?: Record<string, any>
+        meta?: Record<string, any>,
     ): Logger {
         const timestamp = new Date().toISOString();
 
@@ -46,14 +46,14 @@ export class AppLogger {
             contextName: this.context,
             ctx,
             timestamp,
-            ...meta
+            ...meta,
         });
     }
 
     debug(
         ctx: RequestContext,
         message: string,
-        meta?: Record<string, any>
+        meta?: Record<string, any>,
     ): Logger {
         const timestamp = new Date().toISOString();
 
@@ -62,14 +62,14 @@ export class AppLogger {
             contextName: this.context,
             ctx,
             timestamp,
-            ...meta
+            ...meta,
         });
     }
 
     verbose(
         ctx: RequestContext,
         message: string,
-        meta?: Record<string, any>
+        meta?: Record<string, any>,
     ): Logger {
         const timestamp = new Date().toISOString();
 
@@ -78,14 +78,14 @@ export class AppLogger {
             contextName: this.context,
             ctx,
             timestamp,
-            ...meta
+            ...meta,
         });
     }
 
     log(
         ctx: RequestContext,
         message: string,
-        meta?: Record<string, any>
+        meta?: Record<string, any>,
     ): Logger {
         const timestamp = new Date().toISOString();
 
@@ -94,7 +94,7 @@ export class AppLogger {
             contextName: this.context,
             ctx,
             timestamp,
-            ...meta
+            ...meta,
         });
     }
 }

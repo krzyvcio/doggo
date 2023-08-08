@@ -1,128 +1,139 @@
-import {UnauthorizedException} from "@nestjs/common";
-import {ConfigService} from "@nestjs/config";
-import {JwtService} from "@nestjs/jwt";
-import {Test, TestingModule} from "@nestjs/testing";
+import { UnauthorizedException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
+import { Test, TestingModule } from '@nestjs/testing';
 
-import {AppLogger} from "../../shared/logger/logger.service";
-import {RequestContext} from "../../shared/request-context/request-context.dto";
-import {UserOutput} from "../../user/dtos/user-output.dto";
-import {UserService} from "../../user/services/user.service";
-import {ROLE} from "../constants/role.constant";
-import {AuthTokenOutput, UserAccessTokenClaims} from "../dtos/auth-token-output.dto";
-import {AuthService} from "./auth.service";
+import { AppLogger } from '../../shared/logger/logger.service';
+import { RequestContext } from '../../shared/request-context/request-context.dto';
+import { UserOutput } from '../../user/dtos/user-output.dto';
+import { UserService } from '../../user/services/user.service';
+import { ROLE } from '../constants/role.constant';
+import {
+    AuthTokenOutput,
+    UserAccessTokenClaims,
+} from '../dtos/auth-token-output.dto';
+import { AuthService } from './auth.service';
 
-describe("AuthService", () => {
+describe('AuthService', () => {
     let service: AuthService;
 
     const accessTokenClaims: UserAccessTokenClaims = {
         id: 6,
-        username: "jhon",
-        roles: [ROLE.USER]
+        username: 'jhon',
+        roles: [ROLE.USER],
     };
 
     const registerInput = {
-        username: "jhon",
-        name: "Jhon doe",
-        password: "any password",
+        username: 'jhon',
+        name: 'Jhon doe',
+        password: 'any password',
         roles: [ROLE.USER],
         isAccountDisabled: false,
-        email: "randomUser@random.com"
+        email: 'randomUser@random.com',
     };
 
     const currentDate = new Date().toString();
 
     const userOutput: UserOutput = {
-        username: "jhon",
-        name: "Jhon doe",
+        username: 'jhon',
+        name: 'Jhon doe',
         roles: [ROLE.USER],
         isAccountDisabled: false,
-        email: "randomUser@random.com",
+        email: 'randomUser@random.com',
         createdAt: currentDate,
         updatedAt: currentDate,
-        ...accessTokenClaims
+        ...accessTokenClaims,
     };
 
     const authToken: AuthTokenOutput = {
-        accessToken: "random_access_token",
-        refreshToken: "random_refresh_token"
+        accessToken: 'random_access_token',
+        refreshToken: 'random_refresh_token',
     };
 
     const mockedUserService = {
         findById: jest.fn(),
         createUser: jest.fn(),
-        validateUsernamePassword: jest.fn()
+        validateUsernamePassword: jest.fn(),
     };
 
     const mockedJwtService = {
-        sign: jest.fn()
+        sign: jest.fn(),
     };
 
-    const mockedConfigService = {get: jest.fn()};
+    const mockedConfigService = { get: jest.fn() };
 
-    const mockedLogger = {setContext: jest.fn(), log: jest.fn()};
+    const mockedLogger = { setContext: jest.fn(), log: jest.fn() };
 
     beforeEach(async () => {
         const moduleRef: TestingModule = await Test.createTestingModule({
             providers: [
                 AuthService,
-                {provide: UserService, useValue: mockedUserService},
-                {provide: JwtService, useValue: mockedJwtService},
-                {provide: ConfigService, useValue: mockedConfigService},
-                {provide: AppLogger, useValue: mockedLogger}
-            ]
+                { provide: UserService, useValue: mockedUserService },
+                { provide: JwtService, useValue: mockedJwtService },
+                { provide: ConfigService, useValue: mockedConfigService },
+                { provide: AppLogger, useValue: mockedLogger },
+            ],
         }).compile();
 
         service = moduleRef.get<AuthService>(AuthService);
     });
 
-    it("should be defined", () => {
+    it('should be defined', () => {
         expect(service).toBeDefined();
     });
 
     const ctx = new RequestContext();
 
-    describe("validateUser", () => {
-        it("should success when username/password valid", async () => {
-            jest
-                .spyOn(mockedUserService, "validateUsernamePassword")
-                .mockImplementation(() => userOutput);
+    describe('validateUser', () => {
+        it('should success when username/password valid', async () => {
+            jest.spyOn(
+                mockedUserService,
+                'validateUsernamePassword',
+            ).mockImplementation(() => userOutput);
 
-            expect(await service.validateUser(ctx, "jhon", "somepass")).toEqual(
-                userOutput
+            expect(await service.validateUser(ctx, 'jhon', 'somepass')).toEqual(
+                userOutput,
             );
             expect(mockedUserService.validateUsernamePassword).toBeCalledWith(
                 ctx,
-                "jhon",
-                "somepass"
+                'jhon',
+                'somepass',
             );
         });
 
-        it("should fail when username/password invalid", async () => {
-            jest
-                .spyOn(mockedUserService, "validateUsernamePassword")
-                .mockImplementation(() => {
-                    throw new UnauthorizedException();
-                });
+        it('should fail when username/password invalid', async () => {
+            jest.spyOn(
+                mockedUserService,
+                'validateUsernamePassword',
+            ).mockImplementation(() => {
+                throw new UnauthorizedException();
+            });
 
             await expect(
-                service.validateUser(ctx, "jhon", "somepass")
+                service.validateUser(ctx, 'jhon', 'somepass'),
             ).rejects.toThrowError(UnauthorizedException);
         });
 
-        it("should fail when user account is disabled", async () => {
-            jest
-                .spyOn(mockedUserService, "validateUsernamePassword")
-                .mockImplementation(() => ({...userOutput, isAccountDisabled: true}));
+        it('should fail when user account is disabled', async () => {
+            jest.spyOn(
+                mockedUserService,
+                'validateUsernamePassword',
+            ).mockImplementation(() => ({
+                ...userOutput,
+                isAccountDisabled: true,
+            }));
 
             await expect(
-                service.validateUser(ctx, "jhon", "somepass")
+                service.validateUser(ctx, 'jhon', 'somepass'),
             ).rejects.toThrowError(UnauthorizedException);
         });
     });
 
-    describe("login", () => {
-        it("should return auth token for valid user", async () => {
-            jest.spyOn(service, "getAuthToken").mockImplementation(() => authToken);
+    describe('login', () => {
+        it('should return auth token for valid user', async () => {
+            jest.spyOn(service, 'getAuthToken').mockImplementation(
+                () => authToken,
+            );
 
             const result = service.login(ctx);
 
@@ -131,28 +142,33 @@ describe("AuthService", () => {
         });
     });
 
-    describe("register", () => {
-        it("should register new user", async () => {
-            jest
-                .spyOn(mockedUserService, "createUser")
-                .mockImplementation(() => userOutput);
+    describe('register', () => {
+        it('should register new user', async () => {
+            jest.spyOn(mockedUserService, 'createUser').mockImplementation(
+                () => userOutput,
+            );
 
             const result = await service.register(ctx, registerInput);
 
-            expect(mockedUserService.createUser).toBeCalledWith(ctx, registerInput);
+            expect(mockedUserService.createUser).toBeCalledWith(
+                ctx,
+                registerInput,
+            );
             expect(result).toEqual(userOutput);
         });
     });
 
-    describe("refreshToken", () => {
+    describe('refreshToken', () => {
         ctx.user = accessTokenClaims;
 
-        it("should generate auth token", async () => {
-            jest
-                .spyOn(mockedUserService, "findById")
-                .mockImplementation(async () => userOutput);
+        it('should generate auth token', async () => {
+            jest.spyOn(mockedUserService, 'findById').mockImplementation(
+                async () => userOutput,
+            );
 
-            jest.spyOn(service, "getAuthToken").mockImplementation(() => authToken);
+            jest.spyOn(service, 'getAuthToken').mockImplementation(
+                () => authToken,
+            );
 
             const result = await service.refreshToken(ctx);
 
@@ -160,13 +176,13 @@ describe("AuthService", () => {
             expect(result).toMatchObject(authToken);
         });
 
-        it("should throw exception when user is not valid", async () => {
-            jest
-                .spyOn(mockedUserService, "findById")
-                .mockImplementation(async () => null);
+        it('should throw exception when user is not valid', async () => {
+            jest.spyOn(mockedUserService, 'findById').mockImplementation(
+                async () => null,
+            );
 
             await expect(service.refreshToken(ctx)).rejects.toThrowError(
-                "Invalid user id"
+                'Invalid user id',
             );
         });
 
@@ -175,59 +191,59 @@ describe("AuthService", () => {
         });
     });
 
-    describe("getAuthToken", () => {
+    describe('getAuthToken', () => {
         const accessTokenExpiry = 100;
         const refreshTokenExpiry = 200;
-        const user = {id: 5, username: "username", roles: [ROLE.USER]};
+        const user = { id: 5, username: 'username', roles: [ROLE.USER] };
 
-        const subject = {sub: user.id};
+        const subject = { sub: user.id };
         const payload = {
             username: user.username,
             sub: user.id,
-            roles: [ROLE.USER]
+            roles: [ROLE.USER],
         };
 
         beforeEach(() => {
-            jest.spyOn(mockedConfigService, "get").mockImplementation((key) => {
+            jest.spyOn(mockedConfigService, 'get').mockImplementation((key) => {
                 let value = null;
                 switch (key) {
-                    case "jwt.accessTokenExpiresInSec":
+                    case 'jwt.accessTokenExpiresInSec':
                         value = accessTokenExpiry;
                         break;
-                    case "jwt.refreshTokenExpiresInSec":
+                    case 'jwt.refreshTokenExpiresInSec':
                         value = refreshTokenExpiry;
                         break;
                 }
                 return value;
             });
 
-            jest
-                .spyOn(mockedJwtService, "sign")
-                .mockImplementation(() => "signed-response");
+            jest.spyOn(mockedJwtService, 'sign').mockImplementation(
+                () => 'signed-response',
+            );
         });
 
-        it("should generate access token with payload", () => {
+        it('should generate access token with payload', () => {
             const result = service.getAuthToken(ctx, user);
 
             expect(mockedJwtService.sign).toBeCalledWith(
-                {...payload, ...subject},
-                {expiresIn: accessTokenExpiry}
+                { ...payload, ...subject },
+                { expiresIn: accessTokenExpiry },
             );
 
             expect(result).toMatchObject({
-                accessToken: "signed-response"
+                accessToken: 'signed-response',
             });
         });
 
-        it("should generate refresh token with subject", () => {
+        it('should generate refresh token with subject', () => {
             const result = service.getAuthToken(ctx, user);
 
             expect(mockedJwtService.sign).toBeCalledWith(subject, {
-                expiresIn: refreshTokenExpiry
+                expiresIn: refreshTokenExpiry,
             });
 
             expect(result).toMatchObject({
-                refreshToken: "signed-response"
+                refreshToken: 'signed-response',
             });
         });
 

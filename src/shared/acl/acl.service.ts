@@ -1,7 +1,7 @@
-import {ROLE} from "./../../auth/constants/role.constant";
-import {AclRule, RuleCallback} from "./acl-rule.constant";
-import {Action} from "./action.constant";
-import {Actor} from "./actor.constant";
+import { ROLE } from './../../auth/constants/role.constant';
+import { AclRule, RuleCallback } from './acl-rule.constant';
+import { Action } from './action.constant';
+import { Actor } from './actor.constant';
 
 export class BaseAclService<Resource> {
     /**
@@ -23,7 +23,7 @@ export class BaseAclService<Resource> {
 
                     //find all rules for given user role
                     const aclRules = this.aclRules.filter(
-                        (rule) => rule.role === actorRole
+                        (rule) => rule.role === actorRole,
                     );
 
                     //for each rule, check action permission
@@ -39,7 +39,8 @@ export class BaseAclService<Resource> {
                         //check for custom `ruleCallback` callback
                         canDoAction =
                             hasActionPermission &&
-                            (!aclRule.ruleCallback || aclRule.ruleCallback(resource, actor));
+                            (!aclRule.ruleCallback ||
+                                aclRule.ruleCallback(resource, actor));
                     });
                 });
 
@@ -54,10 +55,10 @@ export class BaseAclService<Resource> {
     protected canDo(
         role: ROLE,
         actions: Action[],
-        ruleCallback?: RuleCallback<Resource>
+        ruleCallback?: RuleCallback<Resource>,
     ): void {
         ruleCallback
-            ? this.aclRules.push({role, actions, ruleCallback})
-            : this.aclRules.push({role, actions});
+            ? this.aclRules.push({ role, actions, ruleCallback })
+            : this.aclRules.push({ role, actions });
     }
 }

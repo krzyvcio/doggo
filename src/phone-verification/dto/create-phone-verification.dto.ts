@@ -1,2 +1,1 @@
-export class CreatePhoneVerificationDto {
-}
+export class CreatePhoneVerificationDto {}

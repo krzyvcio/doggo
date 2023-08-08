@@ -1,2 +1,1 @@
-export class CreateEmailChangeDto {
-}
+export class CreateEmailChangeDto {}

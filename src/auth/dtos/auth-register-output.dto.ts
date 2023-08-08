@@ -1,7 +1,7 @@
-import {ApiProperty} from "@nestjs/swagger";
-import {Expose} from "class-transformer";
+import { ApiProperty } from '@nestjs/swagger';
+import { Expose } from 'class-transformer';
 
-import {ROLE} from "../constants/role.constant";
+import { ROLE } from '../constants/role.constant';
 
 export class RegisterOutput {
     @Expose()
@@ -17,7 +17,7 @@ export class RegisterOutput {
     username: string;
 
     @Expose()
-    @ApiProperty({example: [ROLE.USER]})
+    @ApiProperty({ example: [ROLE.USER] })
     roles: ROLE[];
 
     @Expose()

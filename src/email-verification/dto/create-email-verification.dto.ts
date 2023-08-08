@@ -1,2 +1,1 @@
-export class CreateEmailVerificationDto {
-}
+export class CreateEmailVerificationDto {}

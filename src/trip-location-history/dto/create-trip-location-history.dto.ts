@@ -1,2 +1,1 @@
-export class CreateTripLocationHistoryDto {
-}
+export class CreateTripLocationHistoryDto {}

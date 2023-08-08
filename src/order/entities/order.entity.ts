@@ -1,21 +1,29 @@
-import {Column, CreateDateColumn, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
+import {
+    Column,
+    CreateDateColumn,
+    Entity,
+    OneToMany,
+    OneToOne,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn,
+} from 'typeorm';
 
-import {Location} from "../../location/entities/location.entity";
-import {Pet} from "../../pet/entities/pet.entity";
-import {Schedule} from "../../schedule/entities/schedule.entity";
-import {Trip} from "../../trip/entities/trip.entity";
-import {User} from "../../user/entities/user.entity";
-import {MoneyCurrency} from "../../wallet/entities/wallet.entity";
+import { Location } from '../../location/entities/location.entity';
+import { Pet } from '../../pet/entities/pet.entity';
+import { Schedule } from '../../schedule/entities/schedule.entity';
+import { Trip } from '../../trip/entities/trip.entity';
+import { User } from '../../user/entities/user.entity';
+import { MoneyCurrency } from '../../wallet/entities/wallet.entity';
 
 export enum OrderType {
-    WALK = "WALK",
-    CARRY = "CARRY",
-    FEED = "FEED",
+    WALK = 'WALK',
+    CARRY = 'CARRY',
+    FEED = 'FEED',
 }
 
 export enum CarryType {
-    WALKER_PLACE = "WALKER_PLACE",
-    OWNER_PLACE = "OWNER_PLACE",
+    WALKER_PLACE = 'WALKER_PLACE',
+    OWNER_PLACE = 'OWNER_PLACE',
 }
 
 @Entity()
@@ -24,11 +32,11 @@ export class Order {
     id: number;
 
     @OneToOne(() => User, (user) => user.id, {
-        nullable: false
+        nullable: false,
     })
     user: User;
 
-    @Column("simple-array")
+    @Column('simple-array')
     type: OrderType[];
 
     @Column()
@@ -54,15 +62,15 @@ export class Order {
     @Column()
     currency: MoneyCurrency;
 
-    @Column("interval", {nullable: true})
+    @Column('interval', { nullable: true })
     walkDuration: number;
-    @Column("float", {nullable: true})
+    @Column('float', { nullable: true })
     walkDistance: number;
 
     @Column()
     carryType: CarryType;
     @OneToOne(() => Location, (loc) => loc.id, {
-        nullable: true
+        nullable: true,
     })
     carryLocation: Location;
 
@@ -72,21 +80,21 @@ export class Order {
     @OneToMany(() => Schedule, (schedule) => schedule.id, {})
     schedule: Schedule[];
 
-    @Column({default: false})
+    @Column({ default: false })
     isPublished: boolean;
 
     @CreateDateColumn({
-        type: "timestamp",
-        default: () => "CURRENT_TIMESTAMP(6)",
-        nullable: true
+        type: 'timestamp',
+        default: () => 'CURRENT_TIMESTAMP(6)',
+        nullable: true,
     })
     createdAt: Date;
 
     @UpdateDateColumn({
-        type: "timestamp",
-        default: () => "CURRENT_TIMESTAMP(6)",
-        onUpdate: "CURRENT_TIMESTAMP(6)",
-        nullable: true
+        type: 'timestamp',
+        default: () => 'CURRENT_TIMESTAMP(6)',
+        onUpdate: 'CURRENT_TIMESTAMP(6)',
+        nullable: true,
     })
     modifiedAt: Date;
 }

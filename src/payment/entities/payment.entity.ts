@@ -1,12 +1,12 @@
-import {Column, Entity, OneToOne, PrimaryGeneratedColumn} from "typeorm";
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-import {Order} from "../../order/entities/order.entity";
-import {MoneyCurrency} from "../../wallet/entities/wallet.entity";
+import { Order } from '../../order/entities/order.entity';
+import { MoneyCurrency } from '../../wallet/entities/wallet.entity';
 
 export enum PaymentMethod {
-    INTERNAL_PAYMENT = "INTERNAL_PAYMENT",
-    WITHDRAWAL = "WITHDRAWAL",
-    REMITTANCE = "REMITTANCE",
+    INTERNAL_PAYMENT = 'INTERNAL_PAYMENT',
+    WITHDRAWAL = 'WITHDRAWAL',
+    REMITTANCE = 'REMITTANCE',
 }
 
 @Entity()
@@ -14,20 +14,20 @@ export class Payment {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({nullable: false})
+    @Column({ nullable: false })
     method: PaymentMethod;
 
-    @Column({nullable: false})
+    @Column({ nullable: false })
     amount: number;
 
-    @Column({nullable: false})
+    @Column({ nullable: false })
     currency: MoneyCurrency;
 
-    @Column({nullable: false})
+    @Column({ nullable: false })
     description: string;
 
     @OneToOne(() => Order, (order) => order.id, {
-        nullable: false
+        nullable: false,
     })
     order: Order;
 }
