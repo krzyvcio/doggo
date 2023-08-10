@@ -24,7 +24,6 @@ model User {
 
   Orders   Order[]
   Payments Payment[]
-  // Reviews  Review[] // Relation to review system if users can rate and review service providers
 
   dogOwnerProfileId Int?             @unique
   dogOwnerProfile   DogOwnerProfile?
@@ -84,14 +83,16 @@ model DogOwnerProfile {
 }
 
 model DogWalkerProfile {
-  id           Int            @id @default(autoincrement())
-  userId       Int            @unique
-  user         User           @relation(fields: [userId], references: [id])
+  id           Int                     @id @default(autoincrement())
+  userId       Int                     @unique
+  user         User                    @relation(fields: [userId], references: [id])
   bio          String? // Bio
   experience   String? // Experience level
-  availability Availability[]
+  availability DogWalkerAvailability[]
   Orders       Order[]
   Review       Review[]
+
+  isVerified Boolean @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -99,7 +100,7 @@ model DogWalkerProfile {
   @@map("dogWalkerProfiles")
 }
 
-model Availability {
+model DogWalkerAvailability {
   id                 Int              @id @default(autoincrement())
   dogWalkerProfileId Int              @unique
   dogWalkerProfile   DogWalkerProfile @relation(fields: [dogWalkerProfileId], references: [id])
@@ -110,7 +111,7 @@ model Availability {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("availabilities")
+  @@map("dogWalkerAvailabilities")
 }
 
 enum Weekday {
@@ -179,11 +180,18 @@ model Order {
   dogWalkerProfileId Int?
   Review             Review[]
 
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  Transaction Transaction[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("orders")
+}
+
+enum ServiceType {
+  Walk
+  Feeding
+  Play
+  Stay
+  Carry
 }
 
 model Wallet {
@@ -192,32 +200,37 @@ model Wallet {
   User    User  @relation(fields: [userId], references: [id])
   balance Float
 
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  Transaction Transaction[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Payment   Payment[]
 
   @@map("wallets")
 }
 
-model Transaction {
-  id        Int      @id @default(autoincrement())
-  amount    Float
-  walletId  Int
-  Wallet    Wallet   @relation(fields: [walletId], references: [id])
-  orderId   Int
-  Order     Order    @relation(fields: [orderId], references: [id])
+model Payment {
+  id      Int           @id @default(autoincrement())
+  orderId Int           @unique
+  Order   Order         @relation(fields: [orderId], references: [id])
+  amount  Float
+  status  PaymentStatus
+  method  PaymentMethod
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  User      User?    @relation(fields: [userId], references: [id])
+  userId    Int?
+  Wallet    Wallet?  @relation(fields: [walletId], references: [id])
+  walletId  Int?
 
-  transactionStatus TransactionStatus
-
-  @@map("transactions")
+  @@map("payments")
 }
 
-enum TransactionStatus {
+enum PaymentStatus {
   Pending
   Completed
   Failed
+  Canceled
+  Challenged
 }
 
 enum UserRole {
@@ -240,34 +253,11 @@ model GPS {
   @@map("gps")
 }
 
-model Payment {
-  id      Int           @id @default(autoincrement())
-  Amount  Float
-  Method  PaymentMethod
-  orderId Int           @unique
-  Order   Order         @relation(fields: [orderId], references: [id])
-  userId  Int
-  User    User          @relation(fields: [userId], references: [id])
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("payments")
-}
-
 enum PaymentMethod {
   Blik
   GoCardless
   Card
   PayPal
-}
-
-// The type of service requested (walk, feeding, play etc.)
-enum ServiceType {
-  Walking
-  Feeding
-  PlayEtc
-  Carry
 }
 
 // Ratings and reviews

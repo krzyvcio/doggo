@@ -6,10 +6,15 @@ import {
     Param,
     Patch,
     Post,
+    UseGuards,
 } from '@nestjs/common';
 import { DogWalkerProfileService } from './dog-walker-profile.service';
 import { CreateDogWalkerProfileDto } from './dto/create-dog-walker-profile.dto';
 import { UpdateDogWalkerProfileDto } from './dto/update-dog-walker-profile.dto';
+import { JwtGuard } from '../auth/guard';
+import { RolesGuard } from '../auth/guard/roles.guard';
+import { Roles } from '../auth/decorator';
+import { UserRole } from '@prisma/client';
 
 @Controller('dog-walker-profile')
 export class DogWalkerProfileController {
@@ -17,6 +22,8 @@ export class DogWalkerProfileController {
         private readonly dogWalkerProfileService: DogWalkerProfileService,
     ) {}
 
+    @UseGuards(JwtGuard, RolesGuard)
+    @Roles(UserRole.Admin)
     @Post()
     create(
         @Body()
@@ -27,11 +34,15 @@ export class DogWalkerProfileController {
         );
     }
 
+    @UseGuards(JwtGuard, RolesGuard)
+    @Roles(UserRole.Admin)
     @Get()
     findAll() {
         return this.dogWalkerProfileService.findAll();
     }
 
+    @UseGuards(JwtGuard, RolesGuard)
+    @Roles(UserRole.Admin)
     @Get(':id')
     findOne(@Param('id') id: string) {
         return this.dogWalkerProfileService.findOne(
@@ -39,6 +50,8 @@ export class DogWalkerProfileController {
         );
     }
 
+    @UseGuards(JwtGuard, RolesGuard)
+    @Roles(UserRole.Admin)
     @Patch(':id')
     update(
         @Param('id') id: string,
