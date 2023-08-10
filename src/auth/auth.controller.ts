@@ -52,7 +52,7 @@ export class AuthController {
             ctx,
             'register controller',
         );
-        return this.authService.register(
+        return await this.authService.register(
             ctx,
             dto,
         );

@@ -71,42 +71,48 @@ export class AuthService {
                     );
                 });
 
-            if (dto.petOwner) {
-                await this.prisma.dogOwnerProfile.create(
-                    {
-                        data: {
-                            userId: user.id,
+            if (dto.petWalker) {
+                const dogWalkerProfile =
+                    await this.prisma.dogWalkerProfile.create(
+                        {
+                            data: {
+                                userId: user.id,
+                            },
                         },
-                    },
-                );
+                    );
                 //add role to user push do field roles
                 await this.prisma.user.update({
                     where: {
                         id: user.id,
                     },
                     data: {
+                        dogWalkerProfileId:
+                            dogWalkerProfile.id,
                         roles: {
-                            push: UserRole.DogOwner,
+                            push: UserRole.DogWalker,
                         },
                     },
                 });
             }
-            if (dto.petWalker) {
-                await this.prisma.dogWalkerProfile.create(
-                    {
-                        data: {
-                            userId: user.id,
+
+            if (dto.petOwner) {
+                const dogOwnerProfile =
+                    await this.prisma.dogOwnerProfile.create(
+                        {
+                            data: {
+                                userId: user.id,
+                            },
                         },
-                    },
-                );
-                //add role to user push do field roles
+                    );
                 await this.prisma.user.update({
                     where: {
                         id: user.id,
                     },
                     data: {
+                        dogOwnerProfileId:
+                            dogOwnerProfile.id,
                         roles: {
-                            push: UserRole.DogWalker,
+                            push: UserRole.DogOwner,
                         },
                     },
                 });
