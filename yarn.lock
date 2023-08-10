@@ -412,9 +412,9 @@
   integrity sha512-a8TLtmPi8xzPkCbp/OGFUo5yhRkHM2Ko9kOWP4znJr0WAhWyThaw3PnwX4vOTWOAMsV2uRt32PPDcEz63esSaA==
 
 "@exodus/schemasafe@^1.0.0-rc.9":
-  version "1.1.1"
-  resolved "https://registry.npmjs.org/@exodus/schemasafe/-/schemasafe-1.1.1.tgz#006ab8b33b1aec6d2992c75e5918c65197388aa2"
-  integrity sha512-Pd7+aGvWIaTDL5ecV4ZBEtBrjXnk8/ly5xyHbikxVhgcq7qhihzHWHbcYmFupQBT2A5ggNZGvT7Bpj0M6AKHjA==
+  version "1.2.3"
+  resolved "https://registry.npmjs.org/@exodus/schemasafe/-/schemasafe-1.2.3.tgz#6a802a8d9decf8bc90dd834f95e8f41c4feb55b0"
+  integrity sha512-hmdFF4vVyvXosVdCCnZPCfrgwNPA79y3K5l0QzlKFcK5Qd3nkM9oGKcQYCTnTRWJXIV5SUMkkTFIEIdDFtxQPQ==
 
 "@humanwhocodes/config-array@^0.11.10":
   version "0.11.10"
@@ -2345,9 +2345,9 @@ ee-first@1.1.1:
   integrity sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==
 
 electron-to-chromium@^1.4.477:
-  version "1.4.488"
-  resolved "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.488.tgz#442b1855f8c84fb1ed79f518985c65db94f64cc9"
-  integrity sha512-Dv4sTjiW7t/UWGL+H8ZkgIjtUAVZDgb/PwGWvMsCT7jipzUV/u5skbLXPFKb6iV0tiddVi/bcS2/kUrczeWgIQ==
+  version "1.4.490"
+  resolved "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.490.tgz#d99286f6e915667fa18ea4554def1aa60eb4d5f1"
+  integrity sha512-6s7NVJz+sATdYnIwhdshx/N/9O6rvMxmhVoDSDFdj6iA45gHR8EQje70+RYsF4GeB+k0IeNSBnP7yG9ZXJFr7A==
 
 emittery@^0.8.1:
   version "0.8.1"
@@ -4021,9 +4021,9 @@ lru-cache@^6.0.0:
     yallist "^4.0.0"
 
 luxon@^3.2.1:
-  version "3.3.0"
-  resolved "https://registry.npmjs.org/luxon/-/luxon-3.3.0.tgz#d73ab5b5d2b49a461c47cedbc7e73309b4805b48"
-  integrity sha512-An0UCfG/rSiqtAIiBPO0Y9/zAnHUZxAMiCpTd5h2smgsj7GGmcenvrvww2cqNA8/4A5ZrD1gJpHN2mIHZQF+Mg==
+  version "3.4.0"
+  resolved "https://registry.npmjs.org/luxon/-/luxon-3.4.0.tgz#17cb754efecbf76994f05b2a3f1f91fad7ddfde7"
+  integrity sha512-7eDo4Pt7aGhoCheGFIuq4Xa2fJm4ZpmldpGhjTYBNUYNCN6TIEP6v7chwwwt3KRp7YR+rghbfvjyo3V5y9hgBw==
 
 macos-release@^2.5.0:
   version "2.5.1"

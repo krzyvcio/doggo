@@ -6,7 +6,9 @@ import {
     Post,
 } from '@nestjs/common';
 import { UserPasswordResetService } from './user-password-reset.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('password-reset')
 @Controller('password-reset')
 export class UserPasswordResetController {
     constructor(

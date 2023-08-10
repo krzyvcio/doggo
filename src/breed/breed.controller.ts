@@ -15,7 +15,9 @@ import { JwtGuard } from '../auth/guard';
 import { RolesGuard } from '../auth/guard/roles.guard';
 import { Roles } from '../auth/decorator/roles.decorator';
 import { UserRole } from '@prisma/client';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('breed')
 @Controller('breed')
 export class BreedController {
     constructor(

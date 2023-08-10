@@ -16,7 +16,9 @@ import { RolesGuard } from '../auth/guard/roles.guard';
 import { Roles } from '../auth/decorator/roles.decorator';
 import { UserRole } from '@prisma/client';
 import { GetUser } from '../auth/decorator';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('dog')
 @Controller('dog')
 export class DogController {
     constructor(

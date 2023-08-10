@@ -18,7 +18,9 @@ import {
     Roles,
 } from '../auth/decorator';
 import { UserRole } from '@prisma/client';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('dog-walker-availability')
 @Controller('dog-walker-availability')
 export class DogWalkerAvailabilityController {
     constructor(

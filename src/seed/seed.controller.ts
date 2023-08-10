@@ -2,7 +2,9 @@ import { Controller, Get } from '@nestjs/common';
 import { SeedService } from './seed.service';
 
 import { BreedService } from '../breed/breed.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('seed')
 @Controller('seed')
 export class SeedController {
     constructor(

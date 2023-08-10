@@ -4,7 +4,9 @@ import {
     Param,
 } from '@nestjs/common';
 import { UserEmailConfirmationService } from './user-email-confirmation.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('email-confirmation')
 @Controller('email-confirmation')
 export class UserEmailConfirmationController {
     constructor(

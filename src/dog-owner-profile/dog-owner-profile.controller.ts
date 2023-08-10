@@ -10,7 +10,9 @@ import {
 import { DogOwnerProfileService } from './dog-owner-profile.service';
 import { CreateDogOwnerProfileDto } from './dto/create-dog-owner-profile.dto';
 import { UpdateDogOwnerProfileDto } from './dto/update-dog-owner-profile.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('dog-owner-profile')
 @Controller('dog-owner-profile')
 export class DogOwnerProfileController {
     constructor(

@@ -15,9 +15,13 @@ import { EditUserDto } from './dto';
 import { UserService } from './user.service';
 import { RolesGuard } from '../auth/guard/roles.guard';
 import { Roles } from '../auth/decorator';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import {
+    ApiBearerAuth,
+    ApiTags,
+} from '@nestjs/swagger';
 
 @UseGuards(JwtGuard)
+@ApiTags('users')
 @Controller('users')
 export class UserController {
     constructor(

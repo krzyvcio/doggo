@@ -15,7 +15,9 @@ import { JwtGuard } from '../auth/guard';
 import { RolesGuard } from '../auth/guard/roles.guard';
 import { Roles } from '../auth/decorator';
 import { UserRole } from '@prisma/client';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('dog-walker-profile')
 @Controller('dog-walker-profile')
 export class DogWalkerProfileController {
     constructor(
@@ -23,7 +25,7 @@ export class DogWalkerProfileController {
     ) {}
 
     @UseGuards(JwtGuard, RolesGuard)
-    @Roles(UserRole.Admin)
+    @Roles(UserRole.DogWalker, UserRole.Admin)
     @Post()
     create(
         @Body()
