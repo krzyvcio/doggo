@@ -12,28 +12,80 @@ import { GetUser } from './decorator';
 import { User } from '@prisma/client';
 
 import { JwtGuard } from './guard';
+import { AppLogger } from '../shared/logger/logger.service';
+import { ReqContext } from '../shared/request-context/req-context.decorator';
+import { RequestContext } from '../shared/request-context/request-context.dto';
+import {
+    ApiOperation,
+    ApiResponse,
+    ApiTags,
+} from '@nestjs/swagger';
 
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
     constructor(
         private authService: AuthService,
-    ) {}
-
-    @Post('register')
-    signup(@Body() dto: RegisterDto) {
-        return this.authService.register(dto);
+        private readonly logger: AppLogger,
+    ) {
+        this.logger.setContext(
+            AuthController.name,
+        );
     }
 
+    @ApiOperation({
+        summary: 'User registration API',
+    })
+    @ApiResponse({
+        status: HttpStatus.CREATED,
+    })
+    @ApiResponse({
+        status: HttpStatus.BAD_REQUEST,
+    })
+    @HttpCode(HttpStatus.CREATED)
+    @Post('register')
+    async register(
+        @ReqContext() ctx: RequestContext,
+        @Body() dto: RegisterDto,
+    ) {
+        this.logger.log(
+            ctx,
+            'register controller',
+        );
+        return this.authService.register(
+            ctx,
+            dto,
+        );
+    }
+
+    @ApiOperation({
+        summary: 'User login API',
+    })
+    @ApiResponse({
+        status: HttpStatus.OK,
+        description: 'User login successful',
+    })
+    @ApiResponse({
+        status: HttpStatus.UNAUTHORIZED,
+        description: 'Invalid credentials',
+    })
     @HttpCode(HttpStatus.OK)
     @Post('login')
-    signin(@Body() dto: LoginDto) {
-        return this.authService.login(dto);
+    async login(
+        @ReqContext() ctx: RequestContext,
+        @Body() dto: LoginDto,
+    ) {
+        this.logger.log(ctx, 'login controller');
+        return this.authService.login(ctx, dto);
     }
 
     @HttpCode(HttpStatus.OK)
     @Post('refreshToken')
     @UseGuards(JwtGuard)
-    async refreshToken(@GetUser() user: User) {
+    async refreshToken(
+        @ReqContext() ctx: RequestContext,
+        @GetUser() user: User,
+    ) {
         return this.authService.signToken(
             user.id,
             user.email,

@@ -2,6 +2,8 @@ import {
     Body,
     Controller,
     Get,
+    HttpCode,
+    HttpStatus,
     Param,
     Patch,
     UseGuards,
@@ -12,7 +14,8 @@ import { JwtGuard } from '../auth/guard';
 import { EditUserDto } from './dto';
 import { UserService } from './user.service';
 import { RolesGuard } from '../auth/guard/roles.guard';
-import { Roles } from '../auth/decorator/roles.decorator';
+import { Roles } from '../auth/decorator';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @UseGuards(JwtGuard)
 @Controller('users')
@@ -22,11 +25,25 @@ export class UserController {
     ) {}
 
     @Get('me')
+    @UseGuards(JwtGuard, RolesGuard)
+    @ApiBearerAuth()
+    @HttpCode(HttpStatus.OK)
+    @Roles(
+        UserRole.Admin,
+        UserRole.RegisteredUser,
+    )
     getMe(@GetUser() user: User) {
         return user;
     }
 
     @Patch('updateUser')
+    @UseGuards(JwtGuard, RolesGuard)
+    @ApiBearerAuth()
+    @HttpCode(HttpStatus.OK)
+    @Roles(
+        UserRole.Admin,
+        UserRole.RegisteredUser,
+    )
     editUser(
         @GetUser('id') userId: number,
         @Body() dto: EditUserDto,
@@ -39,6 +56,8 @@ export class UserController {
 
     @UseGuards(JwtGuard, RolesGuard)
     @Roles(UserRole.Admin)
+    @ApiBearerAuth()
+    @HttpCode(HttpStatus.OK)
     @Get('all')
     getAllUsers() {
         return this.userService.getAllUsers();
@@ -46,6 +65,8 @@ export class UserController {
 
     @UseGuards(JwtGuard, RolesGuard)
     @Roles(UserRole.Admin)
+    @ApiBearerAuth()
+    @HttpCode(HttpStatus.OK)
     @Get(':userId')
     getUserById(userId: number) {
         return this.userService.getUserById(
@@ -55,6 +76,8 @@ export class UserController {
 
     @UseGuards(JwtGuard, RolesGuard)
     @Roles(UserRole.Admin)
+    @ApiBearerAuth()
+    @HttpCode(HttpStatus.OK)
     @Get('email/:email')
     getUserByEmail(email: string) {
         return this.userService.getUserByEmail(
@@ -64,6 +87,8 @@ export class UserController {
 
     @UseGuards(JwtGuard, RolesGuard)
     @Roles(UserRole.Admin)
+    @ApiBearerAuth()
+    @HttpCode(HttpStatus.OK)
     @Get('delete/:id')
     async deleteUserById(
         @Param('id') id: string,

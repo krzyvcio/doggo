@@ -5,6 +5,7 @@ import { AuthService } from './auth.service';
 import { JwtStrategy } from './strategy';
 import { UserEmailConfirmationService } from 'src/user-email-confirmation/user-email-confirmation.service';
 import { EmailService } from 'src/email/email.service';
+import { AppLogger } from '../shared/logger/logger.service';
 
 @Module({
     imports: [JwtModule.register({})],
@@ -14,6 +15,7 @@ import { EmailService } from 'src/email/email.service';
         JwtStrategy,
         UserEmailConfirmationService,
         EmailService,
+        AppLogger,
     ],
 })
 export class AuthModule {}

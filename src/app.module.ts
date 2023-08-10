@@ -15,6 +15,7 @@ import { DogModule } from './dog/dog.module';
 import { BreedModule } from './breed/breed.module';
 import { SeedModule } from './seed/seed.module';
 import { DogWalkerAvailabilityModule } from './dog-walker-availability/dog-walker-availability.module';
+import { AppController } from './app.controller';
 
 @Module({
     imports: [
@@ -34,6 +35,7 @@ import { DogWalkerAvailabilityModule } from './dog-walker-availability/dog-walke
         SeedModule,
         DogWalkerAvailabilityModule,
     ],
+    controllers: [AppController],
     providers: [EmailService],
 })
 export class AppModule {}

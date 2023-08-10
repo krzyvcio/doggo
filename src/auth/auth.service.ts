@@ -14,6 +14,8 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { UserEmailConfirmationService } from 'src/user-email-confirmation/user-email-confirmation.service';
 import { EmailService } from 'src/email/email.service';
+import { AppLogger } from '../shared/logger/logger.service';
+import { RequestContext } from '../shared/request-context/request-context.dto';
 
 @Injectable()
 export class AuthService {
@@ -23,13 +25,20 @@ export class AuthService {
         private config: ConfigService,
         private userConfirmationService: UserEmailConfirmationService,
         private emailService: EmailService,
-    ) {}
+        private readonly logger: AppLogger,
+    ) {
+        this.logger.setContext(AuthService.name);
+    }
 
-    async register(dto: RegisterDto) {
+    async register(
+        ctx: RequestContext,
+        dto: RegisterDto,
+    ) {
         // generate the password hash
         const hash = await argon.hash(
             dto.password,
         );
+        this.logger.log(ctx, 'register service');
         // save the new user in the db
         //prisma transaction
 
@@ -123,7 +132,11 @@ export class AuthService {
         }
     }
 
-    async login(dto: LoginDto) {
+    async login(
+        ctx: RequestContext,
+        dto: LoginDto,
+    ) {
+        this.logger.log(ctx, 'login service');
         // find the user by email
         const user =
             await this.prisma.user.findUnique({
