@@ -2,7 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
 }
 
 datasource db {
@@ -105,8 +106,8 @@ model DogWalkerAvailability {
   dogWalkerProfileId Int              @unique
   dogWalkerProfile   DogWalkerProfile @relation(fields: [dogWalkerProfileId], references: [id])
   weekday            Weekday
-  startHour          Int
-  endHour            Int
+  startHour          Int // 24h format
+  endHour            Int // 24h format
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

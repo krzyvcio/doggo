@@ -13,7 +13,10 @@ import { CreateDogWalkerAvailabilityDto } from './dto/create-dog-walker-availabi
 import { UpdateDogWalkerAvailabilityDto } from './dto/update-dog-walker-availability.dto';
 import { JwtGuard } from '../auth/guard';
 import { RolesGuard } from '../auth/guard/roles.guard';
-import { Roles } from '../auth/decorator';
+import {
+    GetUser,
+    Roles,
+} from '../auth/decorator';
 import { UserRole } from '@prisma/client';
 
 @Controller('dog-walker-availability')
@@ -21,6 +24,26 @@ export class DogWalkerAvailabilityController {
     constructor(
         private readonly dogWalkerAvailabilityService: DogWalkerAvailabilityService,
     ) {}
+
+    @UseGuards(JwtGuard, RolesGuard)
+    @Roles(UserRole.Admin, UserRole.DogWalker)
+    @Get('/my-availability')
+    async getMyAvailability(
+        @GetUser('id') userId: number,
+    ) {
+        return await this.dogWalkerAvailabilityService.getMyAvailability(
+            userId,
+        );
+    }
+
+    @Get('/id/:id')
+    async getDogWalkerAvailability(
+        userId: number,
+    ) {
+        return await this.dogWalkerAvailabilityService.getDogWalkerAvailabilityByDogWalkerProfileId(
+            userId,
+        );
+    }
 
     @Post()
     @UseGuards(JwtGuard, RolesGuard)
