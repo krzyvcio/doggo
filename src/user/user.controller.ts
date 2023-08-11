@@ -1,11 +1,13 @@
 import {
     Body,
     Controller,
+    Delete,
     Get,
     HttpCode,
     HttpStatus,
     Param,
     Patch,
+    Query,
     UseGuards,
 } from '@nestjs/common';
 import { User, UserRole } from '@prisma/client';
@@ -40,7 +42,7 @@ export class UserController {
         return user;
     }
 
-    @Patch('updateUser')
+    @Patch('updateUser/')
     @UseGuards(JwtGuard, RolesGuard)
     @ApiBearerAuth()
     @HttpCode(HttpStatus.OK)
@@ -58,20 +60,46 @@ export class UserController {
         );
     }
 
+    //update user by id param
+    @Patch('updateUser/:userId')
     @UseGuards(JwtGuard, RolesGuard)
-    @Roles(UserRole.Admin)
     @ApiBearerAuth()
     @HttpCode(HttpStatus.OK)
-    @Get('all')
-    getAllUsers() {
-        return this.userService.getAllUsers();
+    @Roles(UserRole.Admin)
+    async editUserById(
+        @Param('userId') userId: string,
+        @Body() dto: EditUserDto,
+    ) {
+        return await this.userService.editUser(
+            +userId,
+            dto,
+        );
     }
 
     @UseGuards(JwtGuard, RolesGuard)
     @Roles(UserRole.Admin)
     @ApiBearerAuth()
     @HttpCode(HttpStatus.OK)
-    @Get(':userId')
+    @Get('all')
+    getAllUsers(
+        @Query('limit') limit?: number,
+        @Query('offset') offset?: number,
+        @Query('firstName') firstName?: string,
+        @Query('lastName') lastName?: string,
+    ) {
+        return this.userService.getAllUsers(
+            limit,
+            offset,
+            firstName,
+            lastName,
+        );
+    }
+
+    @UseGuards(JwtGuard, RolesGuard)
+    @Roles(UserRole.Admin)
+    @ApiBearerAuth()
+    @HttpCode(HttpStatus.OK)
+    @Get('id/:userId')
     getUserById(userId: number) {
         return this.userService.getUserById(
             userId,
@@ -82,8 +110,11 @@ export class UserController {
     @Roles(UserRole.Admin)
     @ApiBearerAuth()
     @HttpCode(HttpStatus.OK)
-    @Get('email/:email')
-    getUserByEmail(email: string) {
+    @Get('email/')
+    getUserByEmail(
+        @Query()
+        email: string,
+    ) {
         return this.userService.getUserByEmail(
             email,
         );
@@ -93,7 +124,7 @@ export class UserController {
     @Roles(UserRole.Admin)
     @ApiBearerAuth()
     @HttpCode(HttpStatus.OK)
-    @Get('delete/:id')
+    @Delete('delete/:id')
     async deleteUserById(
         @Param('id') id: string,
     ) {

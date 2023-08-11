@@ -1,4 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import {
+    Injectable,
+    Param,
+} from '@nestjs/common';
 import { CreateBreedDto } from './dto/create-breed.dto';
 import { UpdateBreedDto } from './dto/update-breed.dto';
 import { PrismaService } from '../prisma/prisma.service';
@@ -10,7 +13,7 @@ export class BreedService {
     constructor(private prisma: PrismaService) {}
 
     async create(createBreedDto: CreateBreedDto) {
-        return await this.prisma.breed.create({
+        return this.prisma.breed.create({
             data: createBreedDto,
         });
     }
@@ -18,28 +21,32 @@ export class BreedService {
     async findAll(
         limit?: number,
         offset?: number,
+        name?: string,
     ) {
-        return await this.prisma.breed.findMany({
+        return this.prisma.breed.findMany({
             take: limit,
             skip: offset,
+            where: {
+                name: {
+                    contains: name,
+                },
+            },
         });
     }
 
     async findOne(id: number) {
-        return await this.prisma.breed.findUnique(
-            {
-                where: {
-                    id: id,
-                },
+        return this.prisma.breed.findUnique({
+            where: {
+                id: id,
             },
-        );
+        });
     }
 
     async update(
         id: number,
         updateBreedDto: UpdateBreedDto,
     ) {
-        return await this.prisma.breed.update({
+        return this.prisma.breed.update({
             where: {
                 id: id,
             },

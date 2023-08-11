@@ -1,4 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import {
+    Injectable,
+    Param,
+} from '@nestjs/common';
 import { CreateDogDto } from './dto/create-dog.dto';
 import { UpdateDogDto } from './dto/update-dog.dto';
 import { PrismaService } from '../prisma/prisma.service';
@@ -57,10 +60,14 @@ export class DogService {
         }
     }
 
-    async findAll(limit?: number) {
+    async findAll(
+        limit?: number,
+        offset?: number,
+    ) {
         const dogs =
             await this.prisma.dog.findMany({
                 take: limit,
+                skip: offset,
             });
 
         return dogs;
@@ -69,11 +76,15 @@ export class DogService {
     async findOneMyDog(
         id: number,
         userId: number,
+        @Param('name') name?: string,
     ) {
         const dog =
             await this.prisma.dog.findUnique({
                 where: {
                     id,
+                    name: {
+                        contains: name,
+                    },
                 },
             });
 

@@ -1,4 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import {
+    Injectable,
+    Param,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { EditUserDto } from './dto';
 
@@ -25,39 +28,80 @@ export class UserService {
         return user;
     }
 
-    async getAllUsers(limit?: number) {
-        const users =
-            await this.prisma.user.findMany({
-                select: {
-                    id: true,
-                    email: true,
+    async getAllUsers(
+        limit?: number,
+        offset?: number,
+        firstName?: string,
+        lastName?: string,
+        hasDowalkerProfile?: boolean,
+        hasDogOwnerProfile?: boolean,
+    ) {
+        return this.prisma.user.findMany({
+            take: limit,
+            skip: offset,
+            where: {
+                firstName: {
+                    contains: firstName,
                 },
-                take: limit,
-            });
-
-        return users;
+                lastName: {
+                    contains: lastName,
+                },
+                dogWalkerProfile: {
+                    isNot: hasDowalkerProfile
+                        ? null
+                        : undefined,
+                },
+                dogOwnerProfile: {
+                    isNot: hasDogOwnerProfile
+                        ? null
+                        : undefined,
+                },
+            },
+        });
     }
 
     async getUserById(userId: number) {
-        const user =
-            await this.prisma.user.findUnique({
-                where: {
-                    id: userId,
-                },
-            });
-
-        return user;
+        return this.prisma.user.findUnique({
+            where: {
+                id: userId,
+            },
+        });
     }
 
     async getUserByEmail(email: string) {
-        const user =
-            await this.prisma.user.findUnique({
-                where: {
-                    email,
-                },
-            });
+        return this.prisma.user.findUnique({
+            where: {
+                email,
+            },
+        });
+    }
 
-        return user;
+    async getUserByPhone(phone: string) {
+        return this.prisma.user.findMany({
+            where: {
+                phone,
+            },
+        });
+    }
+
+    async findAll(
+        limit?: number,
+        offset?: number,
+        firstName?: string,
+        lastName?: string,
+    ) {
+        return this.prisma.user.findMany({
+            take: limit,
+            skip: offset,
+            where: {
+                firstName: {
+                    contains: firstName,
+                },
+                lastName: {
+                    contains: lastName,
+                },
+            },
+        });
     }
 
     async deleteUser(userId: number) {
@@ -115,26 +159,47 @@ export class UserService {
             }
         }
 
-        // const user =
-        //     await this.prisma.user.delete({
-        //         where: {
-        //             id: userId,
-        //         },
-        //     });
+        //mark user as deleted
+        await this.prisma.user.update({
+            where: {
+                id: userId,
+            },
+            select: {
+                id: true,
+                isUserDeleted: true,
+            },
+            data: {
+                isUserDeleted: true,
+            },
+        });
 
         return user;
     }
 
     //careful with this one, im adding it for testing purposes
     async deleteAllUsers() {
-        const users =
-            await this.prisma.user.deleteMany();
-
-        return users;
+        return await this.prisma.user.deleteMany();
     }
 
     // TODO: implement this
-    async getUserWithProfile(userId: number) {
-        return null;
+    async getUserWithProfile(
+        userId: number,
+        dogOwnerProfile: boolean,
+        dogWalkerProfile: boolean,
+    ) {
+        const user =
+            await this.prisma.user.findUnique({
+                where: {
+                    id: userId,
+                },
+                include: {
+                    dogOwnerProfile:
+                        dogOwnerProfile,
+                    dogWalkerProfile:
+                        dogWalkerProfile,
+                },
+            });
+
+        return user;
     }
 }
