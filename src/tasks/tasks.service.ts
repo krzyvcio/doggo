@@ -18,7 +18,7 @@ export class TasksService {
     @Cron(CronExpression.EVERY_5_MINUTES)
     handleCron() {
         this.logger.debug(
-            '[TEST] Called when the 5 hours elapsed',
+            '[TEST] Called when the 5 min elapsed',
         );
     }
 }
