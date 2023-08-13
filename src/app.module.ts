@@ -16,12 +16,17 @@ import { BreedModule } from './breed/breed.module';
 import { SeedModule } from './seed/seed.module';
 import { DogWalkerAvailabilityModule } from './dog-walker-availability/dog-walker-availability.module';
 import { AppController } from './app.controller';
+import { UploadModule } from './upload/upload.module';
+import { TasksService } from './tasks/tasks.service';
+import { ScheduleModule } from '@nestjs/schedule';
+import { TasksModule } from './tasks/tasks.module';
 
 @Module({
     imports: [
         ConfigModule.forRoot({
             isGlobal: true,
         }),
+
         AuthModule,
         UserModule,
         PrismaModule,
@@ -34,8 +39,10 @@ import { AppController } from './app.controller';
         BreedModule,
         SeedModule,
         DogWalkerAvailabilityModule,
+        UploadModule,
+        TasksModule,
     ],
     controllers: [AppController],
-    providers: [EmailService],
+    providers: [EmailService, TasksService],
 })
 export class AppModule {}

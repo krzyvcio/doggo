@@ -19,6 +19,8 @@ import { RolesGuard } from '../auth/guard/roles.guard';
 import { Roles } from '../auth/decorator';
 import {
     ApiBearerAuth,
+    ApiOperation,
+    ApiResponse,
     ApiTags,
 } from '@nestjs/swagger';
 
@@ -33,24 +35,39 @@ export class UserController {
     @Get('me')
     @UseGuards(JwtGuard, RolesGuard)
     @ApiBearerAuth()
+    @ApiOperation({
+        summary: 'Get current user',
+    })
+    @ApiResponse({
+        status: HttpStatus.OK,
+    })
+    @ApiResponse({
+        status: HttpStatus.UNAUTHORIZED,
+    })
     @HttpCode(HttpStatus.OK)
     @Roles(
         UserRole.Admin,
         UserRole.RegisteredUser,
     )
-    getMe(@GetUser() user: User) {
+    async getMe(@GetUser() user: User) {
         return user;
     }
 
-    @Patch('updateUser/')
+    @Patch('me')
     @UseGuards(JwtGuard, RolesGuard)
     @ApiBearerAuth()
     @HttpCode(HttpStatus.OK)
-    @Roles(
-        UserRole.Admin,
-        UserRole.RegisteredUser,
-    )
-    editUser(
+    @ApiOperation({
+        summary: 'Update current user',
+    })
+    @ApiResponse({
+        status: HttpStatus.OK,
+    })
+    @ApiResponse({
+        status: HttpStatus.UNAUTHORIZED,
+    })
+    @Roles(UserRole.RegisteredUser)
+    async editUser(
         @GetUser('id') userId: number,
         @Body() dto: EditUserDto,
     ) {
@@ -65,6 +82,15 @@ export class UserController {
     @UseGuards(JwtGuard, RolesGuard)
     @ApiBearerAuth()
     @HttpCode(HttpStatus.OK)
+    @ApiOperation({
+        summary: 'Update user by id',
+    })
+    @ApiResponse({
+        status: HttpStatus.OK,
+    })
+    @ApiResponse({
+        status: HttpStatus.UNAUTHORIZED,
+    })
     @Roles(UserRole.Admin)
     async editUserById(
         @Param('userId') userId: string,
@@ -80,6 +106,15 @@ export class UserController {
     @Roles(UserRole.Admin)
     @ApiBearerAuth()
     @HttpCode(HttpStatus.OK)
+    @ApiOperation({
+        summary: 'Get all users',
+    })
+    @ApiResponse({
+        status: HttpStatus.OK,
+    })
+    @ApiResponse({
+        status: HttpStatus.UNAUTHORIZED,
+    })
     @Get('all')
     getAllUsers(
         @Query('limit') limit?: number,
@@ -98,6 +133,15 @@ export class UserController {
     @UseGuards(JwtGuard, RolesGuard)
     @Roles(UserRole.Admin)
     @ApiBearerAuth()
+    @ApiOperation({
+        summary: 'Get user by id',
+    })
+    @ApiResponse({
+        status: HttpStatus.OK,
+    })
+    @ApiResponse({
+        status: HttpStatus.UNAUTHORIZED,
+    })
     @HttpCode(HttpStatus.OK)
     @Get('id/:userId')
     getUserById(userId: number) {
@@ -110,6 +154,15 @@ export class UserController {
     @Roles(UserRole.Admin)
     @ApiBearerAuth()
     @HttpCode(HttpStatus.OK)
+    @ApiOperation({
+        summary: 'Get user by email',
+    })
+    @ApiResponse({
+        status: HttpStatus.OK,
+    })
+    @ApiResponse({
+        status: HttpStatus.UNAUTHORIZED,
+    })
     @Get('email/')
     getUserByEmail(
         @Query()
@@ -124,7 +177,16 @@ export class UserController {
     @Roles(UserRole.Admin)
     @ApiBearerAuth()
     @HttpCode(HttpStatus.OK)
-    @Delete('delete/:id')
+    @Delete(':id')
+    @ApiOperation({
+        summary: 'Delete user by id',
+    })
+    @ApiResponse({
+        status: HttpStatus.OK,
+    })
+    @ApiResponse({
+        status: HttpStatus.UNAUTHORIZED,
+    })
     async deleteUserById(
         @Param('id') id: string,
     ) {

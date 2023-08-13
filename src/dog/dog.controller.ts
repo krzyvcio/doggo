@@ -27,6 +27,7 @@ export class DogController {
 
     @UseGuards(JwtGuard, RolesGuard)
     @Roles(UserRole.DogOwner, UserRole.Admin)
+    @Post('upload-image')
     @Post()
     async create(
         @Body() createDogDto: CreateDogDto,

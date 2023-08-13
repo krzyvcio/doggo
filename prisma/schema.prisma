@@ -44,6 +44,36 @@ model User {
   @@map("users")
 }
 
+model Image {
+  id               Int       @id @default(autoincrement())
+  url              String
+  filename         String
+  originalFilename String
+  filepath         String?
+  size             Int?
+  mimetype         String?
+  encoding         String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  imageFor         ImageFor?
+
+  @@map("images")
+}
+
+enum ImageFormat {
+  JPG
+  PNG
+  GIF
+  WEBP
+}
+
+enum ImageFor {
+  UserProfile
+  DogProfile
+  DogWalkerProfile
+  DogOwnerProfile
+}
+
 model UserEmailConfirmation {
   id     Int    @id @default(autoincrement())
   userId Int    @unique
