@@ -22,6 +22,7 @@ async function bootstrap() {
     app.enableCors();
 
     //add swagger
+
     const configSwagger = new DocumentBuilder()
         .setTitle('DogsGo App')
         .setDescription(
