@@ -89,6 +89,7 @@ export class AuthController {
         return this.authService.signToken(
             user.id,
             user.email,
+            user.roles,
         );
     }
 }
