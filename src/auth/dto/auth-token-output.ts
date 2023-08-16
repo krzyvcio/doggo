@@ -6,7 +6,7 @@ import { UserRole } from '@prisma/client';
 export class AuthTokenOutput {
     @Expose()
     @ApiProperty()
-    access_token: string;
+    accessToken: string;
 
     // @Expose()
     // @ApiProperty()

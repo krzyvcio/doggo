@@ -178,7 +178,7 @@ export class AuthService {
         userId: number,
         email: string,
         roles: UserRole[],
-    ): Promise<{ access_token: string }> {
+    ): Promise<{ accessToken: string }> {
         const payload = {
             sub: userId,
             email,
@@ -198,13 +198,13 @@ export class AuthService {
         );
 
         return {
-            access_token: token,
+            accessToken: token,
         };
     }
 
     async refreshToken(
         user: User,
-    ): Promise<{ access_token: string }> {
+    ): Promise<{ accessToken: string }> {
         const payload = {
             sub: user.id,
             email: user.email,
@@ -223,7 +223,7 @@ export class AuthService {
         );
 
         return {
-            access_token: token,
+            accessToken: token,
         };
     }
 
