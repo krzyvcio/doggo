@@ -10,7 +10,7 @@ export class SeedController {
     constructor(
         private readonly seedService: SeedService,
         private breedService: BreedService,
-    ) { }
+    ) {}
 
     @Get('/all')
     async seedAll() {

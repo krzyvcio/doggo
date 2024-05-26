@@ -3,10 +3,9 @@ import { UserRole } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as faker from 'faker';
 
-
 @Injectable()
 export class SeedService {
-    constructor(private prisma: PrismaService) { }
+    constructor(private prisma: PrismaService) {}
 
     public async seedAdmin(): Promise<void> {
         const user =
@@ -93,7 +92,6 @@ export class SeedService {
                 {
                     data: {
                         userId: user.id,
-
                     },
                 },
             );
