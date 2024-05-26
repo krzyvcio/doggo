@@ -6,17 +6,18 @@ import {
     DocumentBuilder,
     SwaggerModule,
 } from '@nestjs/swagger';
+import { CommandFactory } from 'nest-commander';
 
 async function bootstrap() {
-    const app = await NestFactory.create(
-        AppModule,
-    );
+    const app = await NestFactory.create(AppModule);
 
     app.useGlobalPipes(
         new ValidationPipe({
             whitelist: true,
         }),
     );
+
+    await CommandFactory.run(AppModule);
 
     //add cors
     app.enableCors();
@@ -27,9 +28,9 @@ async function bootstrap() {
         .setTitle('DogsGo App')
         .setDescription(
             'A on-demand service for dog walking/pet care that connects local' +
-                ' dog walkers and caregivers with pet owners through a user-friendly' +
-                ' application. Owners can request walks, playtime, feeding, etc. for ' +
-                'their dogs whenever they need it.',
+            ' dog walkers and caregivers with pet owners through a user-friendly' +
+            ' application. Owners can request walks, playtime, feeding, etc. for ' +
+            'their dogs whenever they need it.',
         )
         .setVersion('1.0')
         .addTag('dog-walking-app')
@@ -46,4 +47,8 @@ async function bootstrap() {
     await app.listen(port);
 }
 
-bootstrap();
+bootstrap()
+    .then(() => { })
+    .catch((err) => {
+        console.error(err);
+    });
