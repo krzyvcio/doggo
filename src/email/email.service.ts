@@ -41,7 +41,10 @@ export class EmailService {
         subject: string,
         text: string,
         html?: string,
-    ): Promise<{ message: string; info?: { messageId: string } }> {
+    ): Promise<{
+        message: string;
+        info?: { messageId: string };
+    }> {
         const emailParams = {
             from: '"DogGo" <doggo@rusin.dev>', // sender address
             to: recipient, // list of receivers
@@ -65,7 +68,7 @@ export class EmailService {
         } catch (e) {
             // this.logger.error(
             //     `EmailService.sendMail error: ${e}`,
-            // ); 
+            // );
             //TODO: add logger interface
             return {
                 message: 'Email sending error',
