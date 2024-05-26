@@ -18,24 +18,27 @@ export class SeedController {
             await this.breedService.seed();
 
         return {
-            countBreeds,
+            countBreeds: `${countBreeds} breeds`,
         };
     }
 
     @Get('/breed')
     async seedBreed() {
-        return await this.breedService.seed();
+        await this.breedService.seed();
     }
 
+    @Get('/admin')
     async seedAdmin(): Promise<void> {
-        return await this.seedService.seedAdmin();
+        await this.seedService.seedAdmin();
     }
 
-    async seedDogOwner(): Promise<void> {
-        return await this.seedService.seedDogOwnerProfile();
+    @Get('/dogOwnerProfiles')
+    async seedDogOwnerProfiles(): Promise<void> {
+        await this.seedService.seedDogOwnerProfile();
     }
 
-    async seedDogWalkerProfile(): Promise<void> {
-        return await this.seedService.seedDogWalkerProfile();
+    @Get('/dogWalkerProfiles')
+    async seedDogWalkerProfiles(): Promise<void> {
+        await this.seedService.seedDogWalkerProfile();
     }
 }

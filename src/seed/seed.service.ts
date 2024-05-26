@@ -1,27 +1,67 @@
 import { Injectable } from '@nestjs/common';
 import { UserRole } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
-import * as faker from 'faker';
+import { faker } from '@faker-js/faker';
+import * as argon from 'argon2';
 
 @Injectable()
 export class SeedService {
-    constructor(private prisma: PrismaService) {}
+    constructor(private prisma: PrismaService) { }
 
     public async seedAdmin(): Promise<void> {
-        const user =
-            await this.prisma.user.findFirst();
-        if (!user) {
-            await this.prisma.user.create({
-                data: {
-                    email: 'admin@doggo.pl',
-                    firstName: 'admin',
-                    lastName: 'admin',
-                    roles: {
-                        set: [UserRole.Admin],
+        try {
+            let user =
+                await this.prisma.user.findFirst({
+                    where: {
+                        email: 'admin@doggo.pl',
                     },
-                    password: 'admin',
-                },
-            });
+                });
+
+            const password = await argon.hash(
+                'password',
+            );
+
+            if (user) {
+                await this.prisma.user.delete({
+                    where: {
+                        email: 'admin@doggo.pl',
+                    },
+                });
+            } else {
+                console.log(
+                    'Admin user already exists. Deleting.',
+                );
+            }
+
+            user =
+                await this.prisma.user.findFirst({
+                    where: {
+                        email: 'admin@doggo.pl',
+                    },
+                });
+            if (!user) {
+                console.log(
+                    'Creating new admin user...',
+                );
+                const newUser =
+                    await this.prisma.user.create(
+                        {
+                            data: {
+                                email: 'admin@doggo.pl',
+                                password,
+                                roles: UserRole.Admin,
+                            },
+                        },
+                    );
+                console.log(
+                    `Created new admin user: ${newUser.email}`,
+                );
+            }
+        } catch (error) {
+            console.error(
+                'Error creating admin user:',
+                error,
+            );
         }
     }
 
@@ -33,6 +73,10 @@ export class SeedService {
             i < numDogOwnerProfiles;
             i++
         ) {
+            const password = await argon.hash(
+                'password',
+            );
+
             const user =
                 await this.prisma.user.create({
                     data: {
@@ -46,7 +90,7 @@ export class SeedService {
                                 UserRole.DogOwner,
                             ],
                         },
-                        password: 'password', // Set a fixed password here
+                        password,
                     },
                 });
 
@@ -54,9 +98,6 @@ export class SeedService {
                 {
                     data: {
                         userId: user.id,
-                        address:
-                            faker.address.streetAddress(),
-                        // Add more fields as needed
                     },
                 },
             );
@@ -71,6 +112,10 @@ export class SeedService {
             i < numDogWalkerProfiles;
             i++
         ) {
+            const password = await argon.hash(
+                'password',
+            );
+
             const user =
                 await this.prisma.user.create({
                     data: {
@@ -84,7 +129,7 @@ export class SeedService {
                                 UserRole.DogWalker,
                             ],
                         },
-                        password: 'password', // Set a fixed password here
+                        password,
                     },
                 });
 
