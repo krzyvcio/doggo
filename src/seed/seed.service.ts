@@ -8,6 +8,8 @@ import * as argon from 'argon2';
 export class SeedService {
     constructor(private prisma: PrismaService) { }
 
+    public async clearDatabase(): Promise<void> { }
+
     public async seedAdmin(): Promise<void> {
         try {
             let user =

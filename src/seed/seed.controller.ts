@@ -10,21 +10,35 @@ export class SeedController {
     constructor(
         private readonly seedService: SeedService,
         private breedService: BreedService,
-    ) {}
+    ) { }
 
     @Get('/all')
     async seedAll() {
+        try {
+            await this.breedService.seed();
+
+            await this.seedService.seedAdmin();
+
+            await this.seedService.seedDogOwnerProfile();
+
+            await this.seedService.seedDogWalkerProfile();
+        } catch (error) {
+            console.log(error);
+            return error;
+        }
+        return {
+            message: 'all seeded',
+        };
+    }
+
+    @Get('/breed')
+    async seedBreed() {
         const countBreeds =
             await this.breedService.seed();
 
         return {
             countBreeds: `${countBreeds} breeds`,
         };
-    }
-
-    @Get('/breed')
-    async seedBreed() {
-        await this.breedService.seed();
     }
 
     @Get('/admin')
