@@ -20,6 +20,7 @@ import { UploadModule } from './upload/upload.module';
 import { TasksService } from './tasks/tasks.service';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TasksModule } from './tasks/tasks.module';
+import { OffersModule } from './offers/offers.module';
 
 @Module({
     imports: [
@@ -41,6 +42,7 @@ import { TasksModule } from './tasks/tasks.module';
         DogWalkerAvailabilityModule,
         UploadModule,
         TasksModule,
+        OffersModule,
     ],
     controllers: [AppController],
     providers: [EmailService, TasksService],

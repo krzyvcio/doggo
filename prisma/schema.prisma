@@ -41,6 +41,9 @@ model User {
   isUserDeleted    Boolean @default(false)
   Wallet           Wallet?
 
+  OffersMade     Offer[] @relation("OffersMade")
+  OffersReceived Offer[] @relation("OffersReceived")
+
   @@map("users")
 }
 
@@ -99,7 +102,7 @@ model UserPasswordReset {
 model DogOwnerProfile {
   id     Int     @id @default(autoincrement())
   userId Int     @unique
-  user   User    @relation(fields: [userId], references: [id])
+  user   User?   @relation(fields: [userId], references: [id])
   bio    String? // Bio
 
   dogsOwned Int? // Number of dogs owned
@@ -132,16 +135,17 @@ model DogWalkerProfile {
 }
 
 model DogWalkerAvailability {
-  id                 Int              @id @default(autoincrement())
-  dogWalkerProfileId Int              @unique
-  dogWalkerProfile   DogWalkerProfile @relation(fields: [dogWalkerProfileId], references: [id])
-  weekday            Weekday
+  id                 Int               @id @default(autoincrement())
+  dogWalkerProfileId Int?
+  dogWalkerProfile   DogWalkerProfile? @relation(fields: [dogWalkerProfileId], references: [id])
+  weekday            Weekday?
   startHour          Int // 24h format
   endHour            Int // 24h format
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  @@unique([dogWalkerProfileId, weekday])
   @@map("dogWalkerAvailabilities")
 }
 
@@ -166,11 +170,12 @@ model Dog {
   image String? // Profile image
 
   Orders            Order[]
-  DogOwnerProfile   DogOwnerProfile @relation(fields: [dogOwnerProfileId], references: [id])
-  dogOwnerProfileId Int
+  DogOwnerProfile   DogOwnerProfile? @relation(fields: [dogOwnerProfileId], references: [id])
+  dogOwnerProfileId Int?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Offer     Offer[]
 
   @@map("dogs")
 }
@@ -192,15 +197,15 @@ model Breed {
 // Orders are just walks by dogwalkers for dogowners
 model Order {
   id                 Int               @id @default(autoincrement())
-  dogId              Int
-  Dog                Dog               @relation(fields: [dogId], references: [id])
-  walkerId           Int
-  Walker             User              @relation(fields: [walkerId], references: [id])
+  dogId              Int?
+  Dog                Dog?              @relation(fields: [dogId], references: [id])
+  walkerId           Int?
+  Walker             User?             @relation(fields: [walkerId], references: [id])
   date               DateTime
-  Distance           Float
-  Cost               Float
-  stayDuration       Int // Duration of the stay or walk
-  serviceType        ServiceType // Type of service requested (walk, feeding, play etc.)
+  Distance           Float?
+  Cost               Float?
+  stayDuration       Int? // Duration of the stay or walk
+  serviceType        ServiceType? // Type of service requested (walk, feeding, play etc.)
   GPSCoordinates     GPS[]
   Payment            Payment?
   Tip                Float? // Optional tip from client
@@ -226,10 +231,10 @@ enum ServiceType {
 }
 
 model Wallet {
-  id      Int   @id @default(autoincrement())
-  userId  Int   @unique
-  User    User  @relation(fields: [userId], references: [id])
-  balance Float
+  id      Int    @id @default(autoincrement())
+  userId  Int?   @unique
+  User    User?  @relation(fields: [userId], references: [id])
+  balance Float?
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -239,12 +244,12 @@ model Wallet {
 }
 
 model Payment {
-  id      Int           @id @default(autoincrement())
-  orderId Int           @unique
-  Order   Order         @relation(fields: [orderId], references: [id])
-  amount  Float
-  status  PaymentStatus
-  method  PaymentMethod
+  id      Int            @id @default(autoincrement())
+  orderId Int?           @unique
+  Order   Order?         @relation(fields: [orderId], references: [id])
+  amount  Float?
+  status  PaymentStatus?
+  method  PaymentMethod?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -272,11 +277,11 @@ enum UserRole {
 }
 
 model GPS {
-  id        Int   @id @default(autoincrement())
-  latitude  Float
-  longitude Float
-  orderId   Int
-  Order     Order @relation(fields: [orderId], references: [id])
+  id        Int    @id @default(autoincrement())
+  latitude  Float?
+  longitude Float?
+  orderId   Int?
+  Order     Order? @relation(fields: [orderId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -312,4 +317,26 @@ model Review {
   updatedAt DateTime @updatedAt
 
   @@map("reviews")
+}
+
+model Offer {
+  id        Int          @id @default(autoincrement())
+  walkerId  Int?
+  Walker    User?        @relation("OffersMade", fields: [walkerId], references: [id])
+  ownerId   Int?
+  Owner     User?        @relation("OffersReceived", fields: [ownerId], references: [id])
+  dogId     Int?
+  Dog       Dog?         @relation(fields: [dogId], references: [id])
+  date      DateTime?
+  status    OfferStatus?
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  @@map("offers")
+}
+
+enum OfferStatus {
+  Pending
+  Accepted
+  Rejected
 }

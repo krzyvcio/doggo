@@ -10,7 +10,7 @@ export class SeedController {
     constructor(
         private readonly seedService: SeedService,
         private breedService: BreedService,
-    ) { }
+    ) {}
 
     @Get('/all')
     async seedAll() {
@@ -54,5 +54,25 @@ export class SeedController {
     @Get('/dogWalkerProfiles')
     async seedDogWalkerProfiles(): Promise<void> {
         await this.seedService.seedDogWalkerProfile();
+    }
+
+    @Get('/dogs')
+    async seedDogs(): Promise<void> {
+        await this.seedService.seedDogs();
+    }
+
+    @Get('/assignDogsToDogOwnerProfiles')
+    async seedAssignDogsToDogOwnerProfiles(): Promise<void> {
+        await this.seedService.seedAssignDogsToDogOwnerProfile();
+    }
+
+    @Get('/offers')
+    async seedOffers(): Promise<void> {
+        await this.seedService.seedOffers();
+    }
+
+    @Get('/dogWalkerAvailability')
+    async seedDogWalkerAvailability(): Promise<void> {
+        await this.seedService.seedDogWalkerAvailability();
     }
 }
