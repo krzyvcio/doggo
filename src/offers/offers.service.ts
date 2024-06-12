@@ -50,7 +50,43 @@ export class OffersService {
 
     async findAll() {
         const offers =
-            await this.prisma.offer.findMany();
+            await this.prisma.offer.findMany({
+                include: {
+                    Walker: {
+                        select: {
+                            id: true,
+                            email: true,
+                            phone: true,
+                            roles: false,
+                            firstName: true,
+                            lastName: true,
+                            image: true,
+                            createdAt: false,
+                            updatedAt: false,
+                            isEmailConfirmed:
+                                false,
+                            isUserDeleted: false,
+                        },
+                    },
+                    Owner: {
+                        select: {
+                            id: true,
+                            email: true,
+                            phone: true,
+                            roles: false,
+                            firstName: true,
+                            lastName: true,
+                            image: true,
+                            createdAt: false,
+                            updatedAt: false,
+                            isEmailConfirmed:
+                                false,
+                            isUserDeleted: false,
+                        },
+                    },
+                    Dog: true,
+                },
+            });
         return offers;
     }
 
