@@ -55,6 +55,16 @@ itp. dla swoich psów kiedykolwiek potrzebują.
 -   Sprzedawcy akcesoriów dla zwierząt - możliwości promocji krzyżowej.
 -   Schroniska i organizacje ratujące zwierzęta - potencjalna promocja adopcji.
 
+-   Przychodnie weterynaryjne - partnerstwa marketingowe i porady dotyczące opieki nad zwierzętami.
+-   Sprzedawcy akcesoriów dla zwierząt - możliwości promocji krzyżowej. 
+-   Schroniska i organizacje ratujące zwierzęta - promocja adopcji psów ze schronisk:
+    - Nawiązanie współpracy ze schroniskami, aby udostępniać zdjęcia i profile psów czekających na adopcję w aplikacji.
+    - Umożliwienie użytkownikom przeglądania adoptowanych psów i umawiania wizyt zapoznawczych w schroniskach bezpośrednio przez aplikację.  
+    - Oferowanie zniżek lub darmowych usług opieki dla osób adoptujących psy ze schronisk partnerskich, aby zachęcić do adopcji.
+    - Organizowanie wydarzeń i akcji promujących adopcję we współpracy ze schroniskami, np. wirtualne spacery zapoznawcze z psami do adopcji.
+    - Przekazywanie części zysków lub opłat od użytkowników na rzecz schronisk partnerskich, aby wesprzeć ich działalność.
+
+
 **Struktura kosztów:**
 
 -   Rozwój i utrzymanie platformy i aplikacji.
@@ -169,17 +179,6 @@ Wprowadzenie tej przełomowej technologii noszonej dla psów nie tylko podniesie
 W naszym dążeniu do zapewnienia najlepszej możliwej opieki nad zwierzętami, nieustannie poszukujemy możliwości innowacji, ekspansji i doskonalenia. Poprzez strategiczne rozszerzanie zasięgu geograficznego, ciągłe ulepszanie naszej aplikacji i przełomowe dodatki, takie jak opaska BLE dla psów, jesteśmy gotowi kształtować przyszłość opieki nad zwierzętami domowymi. 
 
 Naszym ostatecznym celem jest stworzenie świata, w którym każdy pies otrzymuje miłość, uwagę i opiekę na jaką zasługuje, a każdy właściciel psa ma narzędzia i wsparcie potrzebne do zapewnienia swoim pupilom najlepszego możliwego życia. Razem, możemy uczynić tę wizję rzeczywistością.
-
-**Kluczowe partnerstwa:**
-
--   Przychodnie weterynaryjne - partnerstwa marketingowe i porady dotyczące opieki nad zwierzętami.
--   Sprzedawcy akcesoriów dla zwierząt - możliwości promocji krzyżowej. 
--   Schroniska i organizacje ratujące zwierzęta - promocja adopcji psów ze schronisk:
-    - Nawiązanie współpracy ze schroniskami, aby udostępniać zdjęcia i profile psów czekających na adopcję w aplikacji.
-    - Umożliwienie użytkownikom przeglądania adoptowanych psów i umawiania wizyt zapoznawczych w schroniskach bezpośrednio przez aplikację.  
-    - Oferowanie zniżek lub darmowych usług opieki dla osób adoptujących psy ze schronisk partnerskich, aby zachęcić do adopcji.
-    - Organizowanie wydarzeń i akcji promujących adopcję we współpracy ze schroniskami, np. wirtualne spacery zapoznawcze z psami do adopcji.
-    - Przekazywanie części zysków lub opłat od użytkowników na rzecz schronisk partnerskich, aby wesprzeć ich działalność.
 
 Partnerstwo ze schroniskami dla zwierząt nie tylko zwiększy pozytywny wpływ społeczny firmy poprzez wspieranie adopcji psów potrzebujących domów, ale także poszerzy bazę potencjalnych klientów. Nowi właściciele adoptowanych psów prawdopodobnie skorzystają z usług firmy, szczególnie jeśli otrzymają promocyjne zniżki. 
 
