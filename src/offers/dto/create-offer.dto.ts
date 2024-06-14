@@ -1,29 +1,42 @@
-import {
-    IsDateString,
-    IsEnum,
-    IsInt,
-    IsOptional,
-} from 'class-validator';
-import { OfferStatus } from '@prisma/client';
+import { IsDateString, IsEmail, IsEnum, IsInt, IsOptional, IsPhoneNumber, IsString, isDateString, isString } from 'class-validator';
+import { OfferType } from '@prisma/client';
 
 export class CreateOfferDto {
-    @IsInt()
-    @IsOptional()
-    walkerId?: number;
 
-    @IsInt()
-    @IsOptional()
-    ownerId?: number;
+    @IsString()
+    firstName: string;
 
-    @IsInt()
+    @IsString()
+    lastName: string;
+
+    @IsEmail()
+    @IsString()
+    email: string;
+
+    @IsPhoneNumber('PL')
+    phone: string;
+
     @IsOptional()
-    dogId?: number;
+    @IsString()
+    dogName: string;
 
     @IsDateString()
     @IsOptional()
-    date?: Date;
+    date: Date;
 
-    @IsEnum(OfferStatus)
+    @IsString()
     @IsOptional()
-    status?: OfferStatus;
+    location: string;
+
+    @IsOptional()
+    priceFor15Minutes: number;
+
+    @IsOptional()
+    priceFor30Minutes: number;
+
+    @IsOptional()
+    priceFor60Minutes: number;
+
+    @IsEnum(OfferType)
+    offerType: OfferType;
 }

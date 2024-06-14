@@ -320,17 +320,27 @@ model Review {
 }
 
 model Offer {
-  id        Int          @id @default(autoincrement())
-  walkerId  Int?
-  Walker    User?        @relation("OffersMade", fields: [walkerId], references: [id])
-  ownerId   Int?
-  Owner     User?        @relation("OffersReceived", fields: [ownerId], references: [id])
-  dogId     Int?
-  Dog       Dog?         @relation(fields: [dogId], references: [id])
-  date      DateTime?
-  status    OfferStatus?
-  createdAt DateTime     @default(now())
-  updatedAt DateTime     @updatedAt
+  id                Int          @id @default(autoincrement())
+  firstName         String?
+  lastName          String?
+  phone             String?
+  email             String?
+  isAnonymous       Boolean?
+  walkerId          Int?
+  Walker            User?        @relation("OffersMade", fields: [walkerId], references: [id])
+  ownerId           Int?
+  Owner             User?        @relation("OffersReceived", fields: [ownerId], references: [id])
+  dogId             Int?
+  dogName           String?
+  Dog               Dog?         @relation(fields: [dogId], references: [id])
+  date              DateTime?
+  status            OfferStatus?
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+  priceFor15Minutes Float?
+  priceFor30Minutes Float?
+  priceFor60Minutes Float?
+  offerType         OfferType?
 
   @@map("offers")
 }
@@ -339,4 +349,10 @@ enum OfferStatus {
   Pending
   Accepted
   Rejected
+  Depricated
+}
+
+enum OfferType {
+  DogOwner
+  DogWalker
 }

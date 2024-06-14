@@ -5,47 +5,48 @@ import { UpdateOfferDto } from './dto/update-offer.dto';
 
 @Injectable()
 export class OffersService {
-    constructor(private prisma: PrismaService) {}
+    constructor(private prisma: PrismaService) { }
 
     async create(createOfferDto: CreateOfferDto) {
-        const {
-            walkerId,
-            ownerId,
-            dogId,
-            date,
-            status,
-        } = createOfferDto;
+        try {
+            const {
+                firstName,
+                lastName,
+                dogName,
+                phone,
+                email,
+                date,
+                priceFor15Minutes,
+                priceFor30Minutes,
+                priceFor60Minutes,
+                offerType,
+            } = createOfferDto;
 
-        const offer =
-            await this.prisma.offer.create({
+
+
+            console.log('createOfferDto', createOfferDto);
+
+            const offer = await this.prisma.offer.create({
                 data: {
-                    Walker: walkerId
-                        ? {
-                              connect: {
-                                  id: walkerId,
-                              },
-                          }
-                        : undefined,
-                    Owner: ownerId
-                        ? {
-                              connect: {
-                                  id: ownerId,
-                              },
-                          }
-                        : undefined,
-                    Dog: dogId
-                        ? {
-                              connect: {
-                                  id: dogId,
-                              },
-                          }
-                        : undefined,
+                    firstName,
+                    lastName,
+                    dogName,
+                    email,
+                    phone,
                     date,
-                    status,
-                },
+                    priceFor15Minutes: +priceFor15Minutes,
+                    priceFor30Minutes: +priceFor30Minutes,
+                    priceFor60Minutes: +priceFor60Minutes,
+                    offerType,
+                    isAnonymous: true,
+                }
             });
 
-        return offer;
+            return offer;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
     }
 
     async findAll() {
@@ -100,48 +101,40 @@ export class OffersService {
 
     async update(
         id: number,
-        updateOfferDto: UpdateOfferDto,
+        updateOfferDto: CreateOfferDto,
     ) {
         const {
-            walkerId,
-            ownerId,
-            dogId,
+            firstName,
+            lastName,
+            email,
+            phone,
+            dogName,
             date,
-            status,
+            priceFor15Minutes,
+            priceFor30Minutes,
+            priceFor60Minutes,
+            offerType,
         } = updateOfferDto;
 
-        const updatedOffer =
-            await this.prisma.offer.update({
-                where: { id },
-                data: {
-                    Walker: walkerId
-                        ? {
-                              connect: {
-                                  id: walkerId,
-                              },
-                          }
-                        : undefined,
-                    Owner: ownerId
-                        ? {
-                              connect: {
-                                  id: ownerId,
-                              },
-                          }
-                        : undefined,
-                    Dog: dogId
-                        ? {
-                              connect: {
-                                  id: dogId,
-                              },
-                          }
-                        : undefined,
-                    date,
-                    status,
-                },
-            });
+        const updatedOffer = await this.prisma.offer.update({
+            where: { id },
+            data: {
+                firstName,
+                lastName,
+                email,
+                phone,
+                dogName,
+                date,
+                priceFor15Minutes,
+                priceFor30Minutes,
+                priceFor60Minutes,
+                offerType,
+            },
+        });
 
         return updatedOffer;
     }
+
 
     async remove(id: number) {
         const deletedOffer =
