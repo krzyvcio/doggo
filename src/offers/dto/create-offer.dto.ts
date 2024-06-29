@@ -29,14 +29,16 @@ export class CreateOfferDto {
     location: string;
 
     @IsOptional()
-    priceFor15Minutes: number;
+    priceFor15Minutes: number | null;
 
     @IsOptional()
-    priceFor30Minutes: number;
+    priceFor30Minutes: number | null;
 
     @IsOptional()
-    priceFor60Minutes: number;
+    priceFor60Minutes: number | null;
+
 
     @IsEnum(OfferType)
     offerType: OfferType;
+
 }
