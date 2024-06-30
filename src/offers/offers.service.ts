@@ -5,7 +5,7 @@ import { UpdateOfferDto } from './dto/update-offer.dto';
 
 @Injectable()
 export class OffersService {
-    constructor(private prisma: PrismaService) { }
+    constructor(private prisma: PrismaService) {}
 
     async create(createOfferDto: CreateOfferDto) {
         try {
@@ -22,25 +22,33 @@ export class OffersService {
                 offerType,
             } = createOfferDto;
 
+            console.log(
+                'createOfferDto',
+                createOfferDto,
+            );
 
-
-            console.log('createOfferDto', createOfferDto);
-
-            const offer = await this.prisma.offer.create({
-                data: {
-                    firstName,
-                    lastName,
-                    dogName,
-                    email,
-                    phone,
-                    date: new Date(date),
-                    priceFor15Minutes: +priceFor15Minutes || null,
-                    priceFor30Minutes: +priceFor30Minutes || null,
-                    priceFor60Minutes: +priceFor60Minutes || null,
-                    offerType,
-                    isAnonymous: true,
-                }
-            });
+            const offer =
+                await this.prisma.offer.create({
+                    data: {
+                        firstName,
+                        lastName,
+                        dogName,
+                        email,
+                        phone,
+                        date: new Date(date),
+                        priceFor15Minutes:
+                            +priceFor15Minutes ||
+                            null,
+                        priceFor30Minutes:
+                            +priceFor30Minutes ||
+                            null,
+                        priceFor60Minutes:
+                            +priceFor60Minutes ||
+                            null,
+                        offerType,
+                        isAnonymous: true,
+                    },
+                });
 
             return offer;
         } catch (error) {
@@ -116,25 +124,25 @@ export class OffersService {
             offerType,
         } = updateOfferDto;
 
-        const updatedOffer = await this.prisma.offer.update({
-            where: { id },
-            data: {
-                firstName,
-                lastName,
-                email,
-                phone,
-                dogName,
-                date,
-                priceFor15Minutes,
-                priceFor30Minutes,
-                priceFor60Minutes,
-                offerType,
-            },
-        });
+        const updatedOffer =
+            await this.prisma.offer.update({
+                where: { id },
+                data: {
+                    firstName,
+                    lastName,
+                    email,
+                    phone,
+                    dogName,
+                    date,
+                    priceFor15Minutes,
+                    priceFor30Minutes,
+                    priceFor60Minutes,
+                    offerType,
+                },
+            });
 
         return updatedOffer;
     }
-
 
     async remove(id: number) {
         const deletedOffer =

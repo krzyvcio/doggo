@@ -21,6 +21,7 @@ import { TasksService } from './tasks/tasks.service';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TasksModule } from './tasks/tasks.module';
 import { OffersModule } from './offers/offers.module';
+import { CitiesModule } from './cities/cities.module';
 
 @Module({
     imports: [
@@ -43,6 +44,7 @@ import { OffersModule } from './offers/offers.module';
         UploadModule,
         TasksModule,
         OffersModule,
+        CitiesModule,
     ],
     controllers: [AppController],
     providers: [EmailService, TasksService],

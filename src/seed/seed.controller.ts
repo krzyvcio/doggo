@@ -75,4 +75,9 @@ export class SeedController {
     async seedDogWalkerAvailability(): Promise<void> {
         await this.seedService.seedDogWalkerAvailability();
     }
+
+    @Get('/cities')
+    async seedCities(): Promise<void> {
+        await this.seedService.seedCities();
+    }
 }

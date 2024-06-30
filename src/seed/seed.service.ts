@@ -8,6 +8,7 @@ import { faker } from '@faker-js/faker';
 import * as argon from 'argon2';
 import { CreateDogDto } from '../dog/dto/create-dog.dto';
 import { OfferStatus } from '@prisma/client';
+import data from 'polskie-miejscowosci';
 
 @Injectable()
 export class SeedService {
@@ -392,6 +393,45 @@ export class SeedService {
         } catch (error) {
             console.error(
                 'Error seeding DogWalkerAvailability:',
+                error,
+            );
+            throw error;
+        }
+    }
+
+    async seedCities() {
+        try {
+            let count = 0;
+            for (const city of data) {
+                await this.prisma.city.upsert({
+                    where: {
+                        foreginKey: city.Id,
+                    },
+                    update: {
+                        type: city.Type,
+                        province: city.Province,
+                        district: city.District,
+                        commune: city.Commune,
+                        latitude: city.Latitude,
+                        longitude: city.Longitude,
+                    },
+                    create: {
+                        name: city.Name,
+                        type: city.Type,
+                        province: city.Province,
+                        district: city.District,
+                        commune: city.Commune,
+                        latitude: city.Latitude,
+                        longitude: city.Longitude,
+                        foreginKey: city.Id,
+                    },
+                });
+                count++;
+            }
+            console.log(`Seeded ${count} cities`);
+        } catch (error) {
+            console.error(
+                'Error seeding cities:',
                 error,
             );
             throw error;
